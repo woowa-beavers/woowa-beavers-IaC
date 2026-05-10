@@ -175,6 +175,31 @@ variable "ec2_5_private_ip" {
 }
 
 # -----------------------------------------------
+# Database 모듈 - RDS
+# -----------------------------------------------
+variable "db_subnet_ids" {
+  description = "DB 서브넷 그룹용 서브넷 ID 목록 (최소 2개, 다른 AZ)"
+  type        = list(string)
+}
+
+variable "rds_sg_id" {
+  description = "RDS 보안 그룹 ID (Woowa-Beavers-RDS-SG)"
+  type        = string
+}
+
+variable "auth_db_password" {
+  description = "Auth RDS master password (GitHub Secrets: TF_VAR_AUTH_DB_PASSWORD)"
+  type        = string
+  sensitive   = true
+}
+
+variable "commerce_db_password" {
+  description = "Commerce RDS master password (GitHub Secrets: TF_VAR_COMMERCE_DB_PASSWORD)"
+  type        = string
+  sensitive   = true
+}
+
+# -----------------------------------------------
 # CDN 모듈 - ALB
 # -----------------------------------------------
 variable "certificate_arn" {

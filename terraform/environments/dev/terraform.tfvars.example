@@ -42,5 +42,11 @@ ec2_4_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_4_key_name   = "woowa-beavers-keypair"
 ec2_4_private_ip = "10.0.2.74"
 
+# RDS
+db_subnet_ids = ["subnet-0d8c0ff181c25bd4a", "subnet-0f2dfaf7ddafbab63"]
+rds_sg_id     = "sg-02cdc3adb97677ca2"
+# auth_db_password     = ""  # GitHub Secrets: TF_VAR_AUTH_DB_PASSWORD
+# commerce_db_password = ""  # GitHub Secrets: TF_VAR_COMMERCE_DB_PASSWORD
+
 # ALB
 certificate_arn = "arn:aws:acm:ap-northeast-2:xxxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"

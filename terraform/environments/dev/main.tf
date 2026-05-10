@@ -61,6 +61,15 @@ module "compute" {
   ec2_5_private_ip = var.ec2_5_private_ip
 }
 
+module "database" {
+  source = "../../modules/database"
+
+  db_subnet_ids        = var.db_subnet_ids
+  rds_sg_id            = var.rds_sg_id
+  auth_db_password     = var.auth_db_password
+  commerce_db_password = var.commerce_db_password
+}
+
 module "cdn" {
   source = "../../modules/cdn"
 

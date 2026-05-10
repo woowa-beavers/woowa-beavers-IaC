@@ -32,6 +32,8 @@ env:
   TF_VAR_alb_sg_id: ${{ secrets.TF_VAR_ALB_SG_ID }}
   TF_VAR_ec2_1_instance_id: ${{ secrets.TF_VAR_EC2_1_INSTANCE_ID }}
   TF_VAR_certificate_arn: ${{ secrets.TF_VAR_CERTIFICATE_ARN }}
+  TF_VAR_auth_db_password: ${{ secrets.TF_VAR_AUTH_DB_PASSWORD }}
+  TF_VAR_commerce_db_password: ${{ secrets.TF_VAR_COMMERCE_DB_PASSWORD }}
 
 jobs:
   # PR 시: 모든 모듈 validate + plan
