@@ -1,4 +1,4 @@
-# terraform/dev/variables.tf
+# terraform/environments/dev/variables.tf
 # 역할: dev 루트 모듈 입력 변수 전체 선언 (networking · compute · cdn 모듈에 전달)
 # 흐름: terraform.tfvars 값 주입 → 변수 검증 → main.tf 를 통해 각 모듈로 전달
 

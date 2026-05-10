@@ -1,4 +1,4 @@
-# terraform/dev/modules/compute/main.tf
+# terraform/modules/compute/main.tf
 # 역할: EC2 인스턴스 + 보안 그룹 정의 (product · auth · inventory · order · ec2-5)
 # 흐름: variables.tf 입력값 → AWS 리소스 생성 → outputs.tf 출력
 

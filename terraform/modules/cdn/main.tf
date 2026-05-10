@@ -1,4 +1,4 @@
-# terraform/dev/modules/cdn/main.tf
+# terraform/modules/cdn/main.tf
 # 역할: ALB · 타겟 그룹 · HTTP/HTTPS 리스너 · 경로 기반 라우팅 규칙 정의
 # 흐름: variables.tf 입력값 → ALB 및 리스너 생성 → EC2 타겟 그룹 연결 → outputs.tf 출력
 

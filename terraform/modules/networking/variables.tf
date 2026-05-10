@@ -1,6 +1,6 @@
-# terraform/dev/modules/networking/variables.tf
+# terraform/modules/networking/variables.tf
 # 역할: networking 모듈 입력 변수 선언 (Bastion · NAT 인스턴스 설정값)
-# 흐름: dev/main.tf 에서 전달 → 변수 검증 → main.tf 에서 참조
+# 흐름: environments/dev/main.tf 에서 전달 → 변수 검증 → main.tf 에서 참조
 
 variable "vpc_id" {
   description = "VPC ID"

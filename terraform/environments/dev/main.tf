@@ -1,5 +1,5 @@
-# terraform/dev/main.tf
-# 역할: dev 계정 루트 모듈 - networking · compute · cdn 모듈을 조합하여 전체 dev 인프라 구성
+# terraform/environments/dev/main.tf
+# 역할: dev 환경 루트 모듈 - networking · compute · cdn 모듈을 조합하여 전체 dev 인프라 구성
 # 흐름: variables.tf 입력값 → 각 모듈 호출 → outputs.tf 출력
 
 terraform {
@@ -17,7 +17,7 @@ provider "aws" {
 }
 
 module "networking" {
-  source = "./modules/networking"
+  source = "../../modules/networking"
 
   vpc_id              = var.vpc_id
   public_subnet_id    = var.public_subnet_id
@@ -33,7 +33,7 @@ module "networking" {
 }
 
 module "compute" {
-  source = "./modules/compute"
+  source = "../../modules/compute"
 
   vpc_id            = var.vpc_id
   private_subnet_id = var.private_subnet_id
@@ -62,7 +62,7 @@ module "compute" {
 }
 
 module "cdn" {
-  source = "./modules/cdn"
+  source = "../../modules/cdn"
 
   vpc_id            = var.vpc_id
   public_subnet_ids = var.public_subnet_ids

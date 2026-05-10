@@ -1,4 +1,4 @@
-# terraform/dev/modules/networking/main.tf
+# terraform/modules/networking/main.tf
 # 역할: Bastion Host + NAT 인스턴스 정의 (퍼블릭 서브넷 네트워크 컴포넌트)
 # 흐름: variables.tf 입력값 → AWS 리소스 생성 → outputs.tf 출력
 

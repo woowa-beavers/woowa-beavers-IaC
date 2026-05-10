@@ -1,4 +1,4 @@
-# terraform/dev/modules/compute/outputs.tf
+# terraform/modules/compute/outputs.tf
 # 역할: EC2 인스턴스 ID · 프라이빗 IP · SG ID 출력
 # 흐름: main.tf 리소스 생성 → 출력값 노출 → cdn 모듈 및 dev/outputs.tf 에서 참조
 

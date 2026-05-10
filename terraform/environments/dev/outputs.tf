@@ -1,4 +1,4 @@
-# terraform/dev/outputs.tf
+# terraform/environments/dev/outputs.tf
 # 역할: dev 루트 모듈 핵심 출력값 노출 (각 모듈 output 취합)
 # 흐름: 각 모듈 outputs → 이 파일에서 re-export → 운영·모니터링 참조
 

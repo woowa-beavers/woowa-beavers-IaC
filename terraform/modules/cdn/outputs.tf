@@ -1,4 +1,4 @@
-# terraform/dev/modules/cdn/outputs.tf
+# terraform/modules/cdn/outputs.tf
 # 역할: ALB DNS · ARN · 타겟 그룹 ARN(EC2 1~5) 출력
 # 흐름: main.tf 리소스 생성 → 출력값 노출 → dev/outputs.tf 및 Cloudflare DNS 에서 참조
 

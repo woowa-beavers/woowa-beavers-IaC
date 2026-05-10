@@ -1,6 +1,6 @@
-# terraform/dev/modules/compute/variables.tf
+# terraform/modules/compute/variables.tf
 # 역할: compute 모듈 입력 변수 선언 (EC2 인스턴스 설정값)
-# 흐름: dev/main.tf 에서 전달 → 변수 검증 → main.tf 에서 참조
+# 흐름: environments/dev/main.tf 에서 전달 → 변수 검증 → main.tf 에서 참조
 
 variable "vpc_id" {
   description = "VPC ID"

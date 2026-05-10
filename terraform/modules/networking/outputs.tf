@@ -1,4 +1,4 @@
-# terraform/dev/modules/networking/outputs.tf
+# terraform/modules/networking/outputs.tf
 # 역할: Bastion SG ID · 공인 IP · NAT IP 출력
 # 흐름: main.tf 리소스 생성 → 출력값 노출 → compute 모듈 및 dev/outputs.tf 에서 참조
 
