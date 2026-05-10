@@ -1,1 +1,5 @@
+# terraform/cloudflare/terraform.tfvars.example
+# 역할: Cloudflare 모듈 변수 값 예시 (실제 사용 시 terraform.tfvars 로 복사, 절대 커밋 금지)
+# 흐름: 예시 값 확인 → terraform.tfvars 생성 → terraform apply 시 variables.tf 로 주입
+
 cloudflare_api_token = "your-cloudflare-api-token"
