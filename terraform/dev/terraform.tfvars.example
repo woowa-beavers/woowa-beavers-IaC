@@ -1,1 +1,46 @@
+# terraform/dev/terraform.tfvars.example
+# 역할: dev 루트 모듈 변수 값 예시 (실제 사용 시 terraform.tfvars 로 복사)
+# 흐름: 예시 값 확인 → terraform.tfvars 생성 → terraform apply 시 variables.tf 로 주입
+
 aws_region = "ap-northeast-2"
+
+# 공통 네트워크
+vpc_id              = "vpc-xxxxxxxxxxxxxxxxx"
+public_subnet_id    = "subnet-xxxxxxxxxxxxxxxxx"
+public_subnet_ids   = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-xxxxxxxxxxxxxxxxx"]
+private_subnet_id   = "subnet-xxxxxxxxxxxxxxxxx"
+private_subnet_cidr = "10.0.2.0/24"
+alb_sg_id           = "sg-xxxxxxxxxxxxxxxxx"
+
+# Bastion
+bastion_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+bastion_key_name   = "woowa-beavers-bastion-EC2-key"
+bastion_private_ip = "10.0.1.143"
+
+# NAT
+nat_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+nat_key_name   = "woowa-beavers-bastion-EC2-key"
+nat_private_ip = "10.0.1.171"
+
+# EC2-1 Product
+ec2_1_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+ec2_1_key_name   = "woowa-beavers-keypair"
+ec2_1_private_ip = "10.0.2.xxx"
+
+# EC2-2 Auth
+ec2_2_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+ec2_2_key_name   = "woowa-beavers-keypair"
+ec2_2_private_ip = "10.0.2.233"
+
+# EC2-3 Inventory
+ec2_3_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+ec2_3_key_name   = "woowa-beavers-keypair"
+ec2_3_private_ip = "10.0.2.33"
+
+# EC2-4 Order
+ec2_4_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+ec2_4_key_name   = "woowa-beavers-keypair"
+ec2_4_private_ip = "10.0.2.74"
+
+# ALB
+certificate_arn = "arn:aws:acm:ap-northeast-2:xxxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
