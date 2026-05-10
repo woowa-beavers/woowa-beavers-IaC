@@ -1,0 +1,96 @@
+name: Terraform
+
+on:
+  pull_request:
+    branches: [main]
+    paths: ["terraform/**"]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "실행할 작업"
+        type: choice
+        options: [plan, apply]
+        default: plan
+        required: true
+      directory:
+        description: "대상 디렉토리 (예: terraform/dev/bastion)"
+        type: string
+        required: true
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ap-northeast-2
+  TF_VAR_vpc_id: ${{ secrets.TF_VAR_VPC_ID }}
+  TF_VAR_public_subnet_id: ${{ secrets.TF_VAR_PUBLIC_SUBNET_ID }}
+  TF_VAR_public_subnet_ids: ${{ secrets.TF_VAR_PUBLIC_SUBNET_IDS }}
+  TF_VAR_private_subnet_id: ${{ secrets.TF_VAR_PRIVATE_SUBNET_ID }}
+  TF_VAR_private_subnet_cidr: ${{ secrets.TF_VAR_PRIVATE_SUBNET_CIDR }}
+  TF_VAR_ami_id: ${{ secrets.TF_VAR_AMI_ID }}
+  TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
+  TF_VAR_bastion_sg_id: ${{ secrets.TF_VAR_BASTION_SG_ID }}
+  TF_VAR_alb_sg_id: ${{ secrets.TF_VAR_ALB_SG_ID }}
+  TF_VAR_ec2_1_instance_id: ${{ secrets.TF_VAR_EC2_1_INSTANCE_ID }}
+  TF_VAR_certificate_arn: ${{ secrets.TF_VAR_CERTIFICATE_ARN }}
+
+jobs:
+  # PR 시: 모든 모듈 validate + plan
+  validate:
+    if: github.event_name == 'pull_request'
+    name: Validate (${{ matrix.directory }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        directory:
+          - terraform/dev/bastion
+          - terraform/dev/nat
+          - terraform/dev/ec2-1-product
+          - terraform/dev/ec2-2-auth
+          - terraform/dev/ec2-3-inventory
+          - terraform/dev/ec2-4-order
+          - terraform/dev/alb
+    defaults:
+      run:
+        working-directory: ${{ matrix.directory }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1.5"
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        run: terraform validate
+
+  # workflow_dispatch: 지정 디렉토리에 plan 또는 apply
+  manual:
+    if: github.event_name == 'workflow_dispatch'
+    name: "${{ inputs.action }} — ${{ inputs.directory }}"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.directory }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~> 1.5"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        if: inputs.action == 'plan'
+        run: terraform plan
+
+      - name: Terraform Apply
+        if: inputs.action == 'apply'
+        run: terraform apply -auto-approve
