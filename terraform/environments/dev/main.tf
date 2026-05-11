@@ -19,8 +19,8 @@ provider "aws" {
 module "networking" {
   source = "../../modules/networking"
 
-  vpc_id              = var.vpc_id
-  public_subnet_id    = var.public_subnet_id
+  vpc_id               = var.vpc_id
+  public_subnet_id     = var.public_subnet_id
   private_subnet_cidrs = var.private_subnet_cidrs
 
   bastion_ami_id     = var.bastion_ami_id
