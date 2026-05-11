@@ -1,0 +1,17 @@
+# terraform/sec/misp/terraform.tfvars.example
+# 역할: MISP NAT Gateway 모듈 변수 예시값 (로컬 실행 시 terraform.tfvars로 복사하여 사용)
+# 흐름: 이 파일 복사 → terraform.tfvars 생성 → 실제 값으로 수정 → terraform apply
+
+aws_region   = "ap-northeast-2"
+project_name = "soc-misp"
+
+vpc_name            = "soc-misp-vpc"
+public_subnet_name  = "misp-public-subnet-a"
+private_subnet_name = "misp-private-subnet-a"
+
+tags = {
+  Project     = "soc-misp"
+  Environment = "sec"
+  Service     = "misp"
+  ManagedBy   = "terraform"
+}
