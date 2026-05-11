@@ -1,16 +1,17 @@
 # terraform/sec/misp/main.tf
 # 역할: 기존 MISP VPC/Subnet을 조회하고, NAT Gateway 기반 outbound 경로 구성
+# 흐름: variables.tf 입력값 → 기존 VPC·Subnet·RouteTable 조회 → EIP·NAT Gateway 생성 → Private Route 추가
 
 terraform {
-  required_version = "~> 1.15.2"
+  required_version = "1.15.2"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 6.44"
+      version = "~> 5.0"
     }
   }
-} 
+}
 
 provider "aws" {
   region = var.aws_region

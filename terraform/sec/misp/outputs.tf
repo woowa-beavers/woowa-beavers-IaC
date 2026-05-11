@@ -1,4 +1,6 @@
 # terraform/sec/misp/outputs.tf
+# 역할: MISP NAT Gateway 모듈 출력값 정의
+# 흐름: main.tf 리소스·데이터 소스 → output 블록 → 외부 참조 가능
 
 output "vpc_id" {
   description = "Existing MISP VPC ID"

@@ -1,4 +1,6 @@
 # terraform/sec/misp/variables.tf
+# 역할: MISP NAT Gateway 모듈 입력 변수 정의
+# 흐름: terraform.tfvars → 각 variable 블록 → main.tf 리소스에서 참조
 
 variable "aws_region" {
   description = "AWS region"
