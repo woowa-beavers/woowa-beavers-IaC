@@ -2,29 +2,26 @@
 # 역할: 기존 MISP VPC/Subnet을 조회하고, NAT Gateway 기반 outbound 경로 구성
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = "~> 1.15.2"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.44"
     }
   }
-}
+} 
 
 provider "aws" {
   region = var.aws_region
 }
 
-# 기존 MISP VPC 조회
 data "aws_vpc" "misp" {
   tags = {
     Name = var.vpc_name
   }
 }
 
-# 기존 Public Subnet 조회
-# NAT Gateway가 배치될 서브넷
 data "aws_subnet" "public" {
   filter {
     name   = "vpc-id"
@@ -36,8 +33,6 @@ data "aws_subnet" "public" {
   }
 }
 
-# 기존 Private Subnet 조회
-# MISP EC2가 위치한 서브넷
 data "aws_subnet" "private" {
   filter {
     name   = "vpc-id"
@@ -73,7 +68,6 @@ resource "aws_nat_gateway" "misp" {
   })
 }
 
-# Private Subnet의 기본 경로를 NAT Gateway로 설정
 resource "aws_route" "private_default_to_nat" {
   route_table_id         = data.aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
