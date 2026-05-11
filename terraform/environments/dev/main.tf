@@ -3,7 +3,7 @@
 # 흐름: variables.tf 입력값 → 각 모듈 호출 → outputs.tf 출력
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = "1.15.2"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
