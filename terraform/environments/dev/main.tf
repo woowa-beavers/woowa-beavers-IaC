@@ -3,7 +3,7 @@
 # 흐름: variables.tf 입력값 → 각 모듈 호출 → outputs.tf 출력
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = "1.15.2"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -19,8 +19,8 @@ provider "aws" {
 module "networking" {
   source = "../../modules/networking"
 
-  vpc_id              = var.vpc_id
-  public_subnet_id    = var.public_subnet_id
+  vpc_id               = var.vpc_id
+  public_subnet_id     = var.public_subnet_id
   private_subnet_cidrs = var.private_subnet_cidrs
 
   bastion_ami_id     = var.bastion_ami_id
@@ -59,6 +59,15 @@ module "compute" {
   ec2_5_ami_id     = var.ec2_5_ami_id
   ec2_5_key_name   = var.ec2_5_key_name
   ec2_5_private_ip = var.ec2_5_private_ip
+}
+
+module "database" {
+  source = "../../modules/database"
+
+  db_subnet_ids        = var.db_subnet_ids
+  rds_sg_id            = var.rds_sg_id
+  auth_db_password     = var.auth_db_password
+  commerce_db_password = var.commerce_db_password
 }
 
 module "cdn" {

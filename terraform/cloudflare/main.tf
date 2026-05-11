@@ -3,7 +3,7 @@
 # 흐름: variables.tf 입력값(API 토큰) → Cloudflare provider 초기화 → 하위 리소스 정의
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = "1.15.2"
 
   required_providers {
     cloudflare = {

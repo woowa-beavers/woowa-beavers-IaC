@@ -3,7 +3,7 @@
 # 흐름: variables.tf 입력값 → AWS provider 초기화 → 하위 보안 모듈(compute·iam·networking·security) 독립 실행
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = "1.15.2"
 
   required_providers {
     aws = {

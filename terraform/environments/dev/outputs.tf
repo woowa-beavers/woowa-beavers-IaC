@@ -44,6 +44,19 @@ output "ec2_4_instance_id" {
 }
 
 # -----------------------------------------------
+# Database
+# -----------------------------------------------
+output "auth_db_endpoint" {
+  description = "Auth RDS endpoint"
+  value       = module.database.auth_db_endpoint
+}
+
+output "commerce_db_endpoint" {
+  description = "Commerce RDS endpoint"
+  value       = module.database.commerce_db_endpoint
+}
+
+# -----------------------------------------------
 # CDN
 # -----------------------------------------------
 output "alb_dns_name" {

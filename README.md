@@ -74,7 +74,7 @@ woowa-beavers-infra/
 │   │   ├── networking/             # Bastion Host, NAT Instance
 │   │   ├── cdn/                    # ALB, CloudFront, WAF, 타겟 그룹, 리스너, 라우팅 규칙
 │   │   ├── storage/                # S3 (미작성)
-│   │   └── database/               # RDS (미작성)
+│   │   └── database/               # Auth RDS · Commerce RDS (MySQL 8.4)
 │   ├── environments/               # 환경별 루트 모듈 (변수값만 다름)
 │   │   ├── dev/                    # 개발 환경
 │   │   │   ├── main.tf
