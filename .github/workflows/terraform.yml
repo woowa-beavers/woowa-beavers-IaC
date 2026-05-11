@@ -45,13 +45,9 @@ jobs:
       fail-fast: false
       matrix:
         directory:
-          - terraform/dev/bastion
-          - terraform/dev/nat
-          - terraform/dev/ec2-1-product
-          - terraform/dev/ec2-2-auth
-          - terraform/dev/ec2-3-inventory
-          - terraform/dev/ec2-4-order
-          - terraform/dev/alb
+          - terraform/environments/dev
+          - terraform/sec
+          - terraform/cloudflare
     defaults:
       run:
         working-directory: ${{ matrix.directory }}
