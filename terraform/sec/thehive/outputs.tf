@@ -1,6 +1,6 @@
-# terraform/sec/outputs.tf
-# 역할: sec 루트 모듈 출력 정의 (현재 미사용, 필요 시 서브 모듈 출력값을 상위로 노출)
-# 흐름: 서브 모듈 outputs → 이 파일에서 re-export → 외부 참조
+# terraform/sec/thehive/outputs.tf
+# 역할: TheHive 모듈 출력값 정의
+# 흐름: main.tf 리소스 → output 블록 → 외부 참조 가능
 
 output "nat_public_ip" {
   description = "NAT Instance Public IP"

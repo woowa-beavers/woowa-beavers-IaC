@@ -1,9 +1,9 @@
-# terraform/sec/main.tf
-# 역할: sec 계정 Terraform 루트 모듈 진입점 (AWS provider 설정)
-# 흐름: variables.tf 입력값 → AWS provider 초기화 → 하위 보안 모듈(compute·iam·networking·security) 독립 실행
+# terraform/sec/thehive/main.tf
+# 역할: TheHive EC2 인스턴스 및 NAT 인스턴스 생성, Private Route Table 구성
+# 흐름: variables.tf 입력값 → IAM Profile → NAT Instance·TheHive Server 생성 → Route Table 연결 → EIP 할당
 
 terraform {
-  required_version = ">= 1.15.2"
+  required_version = "1.15.2"
 
   required_providers {
     aws = {
