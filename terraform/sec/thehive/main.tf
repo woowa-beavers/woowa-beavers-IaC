@@ -35,20 +35,20 @@ resource "aws_iam_instance_profile" "ssm_profile" {
 
 # NAT Instance
 resource "aws_instance" "nat" {
-  ami                    = var.ec2_ami
-  instance_type          = "t3.nano"
-  subnet_id              = var.public_subnet_id
-  availability_zone      = "ap-northeast-2d"
-  
+  ami               = var.ec2_ami
+  instance_type     = "t3.nano"
+  subnet_id         = var.public_subnet_id
+  availability_zone = "ap-northeast-2d"
+
   vpc_security_group_ids = var.nat_security_group_ids
   iam_instance_profile   = aws_iam_instance_profile.ssm_profile.name
-  source_dest_check      = false 
+  source_dest_check      = false
 
   # EBS
   root_block_device {
     volume_size = 8
     volume_type = "gp3"
-    tags = { Name = "thehive-nat-root-vol" }
+    tags        = { Name = "thehive-nat-root-vol" }
   }
 
   user_data = <<-EOF
@@ -63,12 +63,12 @@ resource "aws_instance" "nat" {
 # Private Route Table (TheHive -> NAT)
 resource "aws_route_table" "private" {
   vpc_id = var.vpc_id
-  
+
   route {
     cidr_block           = "0.0.0.0/0"
     network_interface_id = aws_instance.nat.primary_network_interface_id
   }
-  
+
   tags = { Name = "thehive-private-rt" }
 }
 
@@ -79,11 +79,11 @@ resource "aws_route_table_association" "private" {
 
 # TheHive Server
 resource "aws_instance" "thehive" {
-  ami                    = var.ec2_ami
-  instance_type          = "t3.large"
-  subnet_id              = var.private_subnet_id
-  availability_zone      = "ap-northeast-2d"
-  
+  ami               = var.ec2_ami
+  instance_type     = "t3.large"
+  subnet_id         = var.private_subnet_id
+  availability_zone = "ap-northeast-2d"
+
   vpc_security_group_ids = var.thehive_security_group_ids
   iam_instance_profile   = aws_iam_instance_profile.ssm_profile.name
 
@@ -91,7 +91,7 @@ resource "aws_instance" "thehive" {
   root_block_device {
     volume_size = 64
     volume_type = "gp3"
-    tags = { Name = "thehive-server-root-vol" }
+    tags        = { Name = "thehive-server-root-vol" }
   }
 
   tags = { Name = "thehive-server" }
