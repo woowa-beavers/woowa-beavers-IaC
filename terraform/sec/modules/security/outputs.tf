@@ -8,11 +8,11 @@ output "securityhub_id" {
 }
 
 output "guardduty_detector_id" {
-  description = "GuardDuty detector ID"
+  description = "GuardDuty Detector ID"
   value       = aws_guardduty_detector.main.id
 }
 
 output "guardduty_detector_arn" {
-  description = "GuardDuty detector ARN"
+  description = "GuardDuty Detector ARN"
   value       = aws_guardduty_detector.main.arn
 }

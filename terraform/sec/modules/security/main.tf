@@ -1,15 +1,10 @@
 # terraform/sec/modules/security/main.tf
-# 역할: sec 계정 보안 서비스 모듈 - GuardDuty, SecurityHub, CloudTrail Lake 관리
-# 흐름: variables.tf 입력값 → GuardDuty 활성화 → 결과 outputs.tf 출력
+# 역할: sec 계정 보안 서비스 모듈 - GuardDuty, SecurityHub, Config 관리
+# 흐름: variables.tf 입력값 → SecurityHub → Config → GuardDuty 활성화
 
 # ==========================================
 # SecurityHub
 # ==========================================
-import {
-  to = aws_securityhub_account.main
-  id = var.sec_account_id
-}
-
 resource "aws_securityhub_account" "main" {
   enable_default_standards = true
 }
@@ -27,11 +22,6 @@ resource "aws_securityhub_standards_subscription" "aws_foundational" {
 # ==========================================
 # AWS Config
 # ==========================================
-import {
-  to = aws_config_configuration_recorder.main
-  id = "default"
-}
-
 resource "aws_config_configuration_recorder" "main" {
   name     = "default"
   role_arn = "arn:aws:iam::${var.sec_account_id}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
@@ -40,11 +30,6 @@ resource "aws_config_configuration_recorder" "main" {
     all_supported                 = true
     include_global_resource_types = true
   }
-}
-
-import {
-  to = aws_config_delivery_channel.main
-  id = "default"
 }
 
 resource "aws_config_delivery_channel" "main" {
@@ -62,11 +47,6 @@ resource "aws_config_configuration_recorder_status" "main" {
 # ==========================================
 # GuardDuty
 # ==========================================
-import {
-  to = aws_guardduty_detector.main
-  id = var.guardduty_detector_id
-}
-
 resource "aws_guardduty_detector" "main" {
   enable = true
 
