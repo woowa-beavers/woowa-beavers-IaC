@@ -3,7 +3,7 @@
 # 흐름: variables.tf 입력값 → 기존 Organization 조회 → OU import → 계정 import
 
 terraform {
-  required_version = "1.15.2"
+  required_version = "1.15.3"
 
   required_providers {
     aws = {
