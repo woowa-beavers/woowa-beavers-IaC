@@ -1,5 +1,21 @@
 # terraform/sec/terraform.tfvars.example
-# 역할: sec 루트 모듈 변수 값 예시 (실제 사용 시 terraform.tfvars 로 복사)
-# 흐름: 예시 값 확인 → terraform.tfvars 생성 → terraform apply 시 variables.tf 로 주입
+# 역할: sec 루트 모듈 변수 예시 (실제 값은 terraform.tfvars에 작성, gitignore 처리)
+# 흐름: 이 파일 복사 → terraform.tfvars 생성 → 실제 값 입력
 
-aws_region = "ap-northeast-2"
+# Networking (MISP)
+misp_vpc_name            = "soc-misp-vpc"
+misp_public_subnet_name  = "soc-misp-public-subnet"
+misp_private_subnet_name = "soc-misp-private-subnet"
+
+# Compute (TheHive)
+ec2_ami                    = "ami-xxxxxxxxxxxxxxxxx"
+thehive_vpc_id             = "vpc-xxxxxxxxxxxxxxxxx"
+thehive_public_subnet_id   = "subnet-xxxxxxxxxxxxxxxxx"
+thehive_private_subnet_id  = "subnet-xxxxxxxxxxxxxxxxx"
+nat_security_group_ids     = ["sg-xxxxxxxxxxxxxxxxx"]
+thehive_security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
+thehive_nat_eip_alloc_id   = "eipalloc-xxxxxxxxxxxxxxxxx"
+
+# Security
+sec_account_id        = "126378327873"
+guardduty_detector_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
