@@ -81,3 +81,53 @@ module "cdn" {
   ec2_1_instance_id = module.compute.ec2_1_instance_id
   x_origin_secret   = var.x_origin_secret
 }
+
+# 1. ALB Logs
+import {
+  to = module.alb_logs.aws_s3_bucket.this
+  id = "woowa-beavers-alb-logs"
+}
+module "alb_logs" {
+  source = "../../modules/storage"
+  bucket_name = "woowa-beavers-alb-logs"
+}
+
+# 2. Shop Static
+import {
+  to = module.shop_static.aws_s3_bucket.this
+  id = "woowa-beavers-shop-static-529646247193-ap-northeast-2-an"
+}
+module "shop_static" {
+  source = "../../modules/storage"
+  bucket_name = "woowa-beavers-shop-static-529646247193-ap-northeast-2-an"
+}
+
+# 3. VPC Flow Logs
+import {
+  to = module.vpc_flow_logs.aws_s3_bucket.this
+  id = "woowabeavers-vpc-flow-logs-apnortheast2"
+}
+module "vpc_flow_logs" {
+  source = "../../modules/storage"
+  bucket_name = "woowabeavers-vpc-flow-logs-apnortheast2"
+}
+
+# 4. CloudTrail Logs 
+import {
+  to = module.cloudtrail_logs_default.aws_s3_bucket.this
+  id = "aws-cloudtrail-logs-529646247193-4ea1fc2d"
+}
+module "cloudtrail_logs_default" {
+  source = "../../modules/storage"
+  bucket_name = "aws-cloudtrail-logs-529646247193-4ea1fc2d"
+}
+
+# 5. CloudTrail Logs 
+import {
+  to = module.cloudtrail_logs_reg.aws_s3_bucket.this
+  id = "woowa-beavers-cloudtrail-logs-529646247193-ap-northeast-2-an"
+}
+module "cloudtrail_logs_reg" {
+  source = "../../modules/storage"
+  bucket_name = "woowa-beavers-cloudtrail-logs-529646247193-ap-northeast-2-an"
+}
