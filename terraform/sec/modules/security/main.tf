@@ -25,6 +25,41 @@ resource "aws_securityhub_standards_subscription" "aws_foundational" {
 }
 
 # ==========================================
+# AWS Config
+# ==========================================
+import {
+  to = aws_config_configuration_recorder.main
+  id = "default"
+}
+
+resource "aws_config_configuration_recorder" "main" {
+  name     = "default"
+  role_arn = "arn:aws:iam::${var.sec_account_id}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+
+  recording_group {
+    all_supported                 = true
+    include_global_resource_types = true
+  }
+}
+
+import {
+  to = aws_config_delivery_channel.main
+  id = "default"
+}
+
+resource "aws_config_delivery_channel" "main" {
+  name           = "default"
+  s3_bucket_name = "woowa-beavers-central-config-logs"
+  depends_on     = [aws_config_configuration_recorder.main]
+}
+
+resource "aws_config_configuration_recorder_status" "main" {
+  name       = aws_config_configuration_recorder.main.name
+  is_enabled = true
+  depends_on = [aws_config_delivery_channel.main]
+}
+
+# ==========================================
 # GuardDuty
 # ==========================================
 import {
