@@ -122,3 +122,35 @@ resource "aws_organizations_account" "workload_extra" {
   email     = var.workload_extra_account_email
   parent_id = aws_organizations_organizational_unit.workload.id
 }
+
+# ==========================================
+# 4. CloudTrail (조직 전체 추적)
+# ==========================================
+import {
+  to = aws_cloudtrail.org
+  id = "soc-org-trail"
+}
+
+resource "aws_cloudtrail" "org" {
+  name                          = "soc-org-trail"
+  s3_bucket_name                = "woowa-beavers-central-cloudtrail-logs"
+  include_global_service_events = true
+  is_multi_region_trail         = true
+  is_organization_trail         = true
+
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
+  cloud_watch_logs_role_arn  = "arn:aws:iam::362437996006:role/service-role/CloudTrail-CloudWatch-Role"
+
+  tags = {
+    Name = "soc-org-trail"
+  }
+}
+
+import {
+  to = aws_cloudwatch_log_group.cloudtrail
+  id = "woowa-beavers-cloudtrail-logs"
+}
+
+resource "aws_cloudwatch_log_group" "cloudtrail" {
+  name = "woowa-beavers-cloudtrail-logs"
+}
