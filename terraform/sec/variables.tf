@@ -77,3 +77,29 @@ variable "sec_account_id" {
   description = "sec 계정 ID"
   type        = string
 }
+
+# ==========================================
+# S3 버킷
+# ==========================================
+variable "cloudtrail_bucket_name" {
+  description = "CloudTrail 로그 S3 버킷 이름"
+  type        = string
+  default     = "woowa-beavers-central-cloudtrail-logs"
+}
+
+variable "config_bucket_name" {
+  description = "Config 로그 S3 버킷 이름"
+  type        = string
+  default     = "woowa-beavers-central-config-logs"
+}
+
+variable "waf_logs_bucket_name" {
+  description = "WAF 로그 S3 버킷 이름"
+  type        = string
+  default     = "soc-waf-logs-126378327873"
+}
+
+variable "wazuh_reader_iam_arn" {
+  description = "Wazuh CloudTrail 읽기 권한 IAM ARN"
+  type        = string
+}
