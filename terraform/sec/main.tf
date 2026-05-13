@@ -62,3 +62,88 @@ module "security" {
 
   sec_account_id = var.sec_account_id
 }
+
+# ==========================================
+# 5. S3 버킷 (CloudTrail / Config / WAF 로그)
+# ==========================================
+module "central_cloudtrail" {
+  source      = "../modules/storage"
+  bucket_name = var.cloudtrail_bucket_name
+  bucket_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AWSCloudTrailAclCheck"
+        Effect    = "Allow"
+        Principal = { Service = "cloudtrail.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = "arn:aws:s3:::${var.cloudtrail_bucket_name}"
+      },
+      {
+        Sid       = "AWSCloudTrailWrite"
+        Effect    = "Allow"
+        Principal = { Service = "cloudtrail.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "arn:aws:s3:::${var.cloudtrail_bucket_name}/AWSLogs/*"
+        Condition = { StringEquals = { "s3:x-amz-acl" = "bucket-owner-full-control" } }
+      },
+      {
+        Sid       = "WazuhReadAccess"
+        Effect    = "Allow"
+        Principal = { AWS = var.wazuh_reader_iam_arn }
+        Action    = ["s3:GetObject", "s3:ListBucket"]
+        Resource  = ["arn:aws:s3:::${var.cloudtrail_bucket_name}", "arn:aws:s3:::${var.cloudtrail_bucket_name}/*"]
+      }
+    ]
+  })
+}
+
+module "central_config" {
+  source      = "../modules/storage"
+  bucket_name = var.config_bucket_name
+  bucket_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AWSConfigBucketPermissionsCheck"
+        Effect    = "Allow"
+        Principal = { Service = "config.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = "arn:aws:s3:::${var.config_bucket_name}"
+      },
+      {
+        Sid       = "AWSConfigBucketDelivery"
+        Effect    = "Allow"
+        Principal = { Service = "config.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "arn:aws:s3:::${var.config_bucket_name}/AWSLogs/*/Config/*"
+        Condition = { StringEquals = { "s3:x-amz-acl" = "bucket-owner-full-control" } }
+      }
+    ]
+  })
+}
+
+module "waf_logs" {
+  source      = "../modules/storage"
+  bucket_name = var.waf_logs_bucket_name
+  bucket_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "WAFLogDelivery"
+        Effect    = "Allow"
+        Principal = { Service = "delivery.logs.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "arn:aws:s3:::${var.waf_logs_bucket_name}/AWSLogs/${var.sec_account_id}/*"
+        Condition = { StringEquals = { "s3:x-amz-acl" = "bucket-owner-full-control" } }
+      },
+      {
+        Sid       = "WAFLogAclCheck"
+        Effect    = "Allow"
+        Principal = { Service = "delivery.logs.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = "arn:aws:s3:::${var.waf_logs_bucket_name}"
+      }
+    ]
+  })
+}

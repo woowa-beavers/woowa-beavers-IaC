@@ -81,3 +81,31 @@ module "cdn" {
   ec2_1_instance_id = module.compute.ec2_1_instance_id
   x_origin_secret   = var.x_origin_secret
 }
+
+# ==========================================
+# S3 버킷
+# ==========================================
+module "alb_logs" {
+  source      = "../../modules/storage"
+  bucket_name = "woowa-beavers-alb-logs"
+}
+
+module "shop_static" {
+  source      = "../../modules/storage"
+  bucket_name = "woowa-beavers-shop-static-529646247193-ap-northeast-2-an"
+}
+
+module "vpc_flow_logs" {
+  source      = "../../modules/storage"
+  bucket_name = "woowabeavers-vpc-flow-logs-apnortheast2"
+}
+
+module "cloudtrail_logs_default" {
+  source      = "../../modules/storage"
+  bucket_name = "aws-cloudtrail-logs-529646247193-4ea1fc2d"
+}
+
+module "cloudtrail_logs_reg" {
+  source      = "../../modules/storage"
+  bucket_name = "woowa-beavers-cloudtrail-logs-529646247193-ap-northeast-2-an"
+}
