@@ -26,3 +26,8 @@ output "workload_ou_id" {
   description = "Workload-OU ID"
   value       = aws_organizations_organizational_unit.workload.id
 }
+
+output "cloudtrail_arn" {
+  description = "조직 CloudTrail ARN"
+  value       = aws_cloudtrail.org.arn
+}
