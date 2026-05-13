@@ -3,7 +3,7 @@
 # 흐름: variables.tf 입력값 → networking → iam → compute → security 모듈 순서로 실행
 
 terraform {
-  required_version = "1.15.2"
+  required_version = "1.15.3"
 
   required_providers {
     aws = {
