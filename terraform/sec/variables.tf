@@ -77,8 +77,3 @@ variable "sec_account_id" {
   description = "sec 계정 ID"
   type        = string
 }
-
-variable "guardduty_detector_id" {
-  description = "기존 GuardDuty Detector ID"
-  type        = string
-}

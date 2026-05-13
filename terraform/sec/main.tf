@@ -60,6 +60,5 @@ module "compute" {
 module "security" {
   source = "./modules/security"
 
-  sec_account_id        = var.sec_account_id
-  guardduty_detector_id = var.guardduty_detector_id
+  sec_account_id = var.sec_account_id
 }

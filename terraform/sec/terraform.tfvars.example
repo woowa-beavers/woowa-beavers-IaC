@@ -17,5 +17,4 @@ thehive_security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
 thehive_nat_eip_alloc_id   = "eipalloc-xxxxxxxxxxxxxxxxx"
 
 # Security
-sec_account_id        = "126378327873"
-guardduty_detector_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+sec_account_id = "126378327873"

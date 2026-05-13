@@ -17,7 +17,3 @@ output "thehive_private_ip" {
   value       = module.compute.thehive_private_ip
 }
 
-output "guardduty_detector_id" {
-  description = "GuardDuty Detector ID"
-  value       = module.security.guardduty_detector_id
-}

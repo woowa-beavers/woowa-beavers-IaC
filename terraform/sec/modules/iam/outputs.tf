@@ -6,3 +6,8 @@ output "thehive_instance_profile_name" {
   description = "TheHive SSM Instance Profile 이름"
   value       = aws_iam_instance_profile.thehive_ssm.name
 }
+
+output "thehive_ssm_role_arn" {
+  description = "TheHive SSM IAM Role ARN"
+  value       = aws_iam_role.thehive_ssm.arn
+}
