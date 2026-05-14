@@ -43,6 +43,11 @@ output "ec2_4_instance_id" {
   value       = module.compute.ec2_4_instance_id
 }
 
+output "ec2_5_instance_id" {
+  description = "EC2-5 instance ID"
+  value       = module.compute.ec2_5_instance_id
+}
+
 # -----------------------------------------------
 # Database
 # -----------------------------------------------

@@ -282,6 +282,7 @@ resource "aws_instance" "ec2_5" {
   }
 
   tags = {
-    Name = "EC2-5"
+    Name    = "EC2-5"
+    Service = "admin"
   }
 }

@@ -50,8 +50,6 @@ module "compute" {
   thehive_security_group_ids    = var.thehive_security_group_ids
   thehive_nat_eip_alloc_id      = var.thehive_nat_eip_alloc_id
   thehive_instance_profile_name = module.iam.thehive_instance_profile_name
-
-  depends_on = [module.iam]
 }
 
 # ==========================================
