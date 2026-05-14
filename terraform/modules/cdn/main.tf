@@ -101,7 +101,7 @@ resource "aws_lb_listener" "https" {
 
     fixed_response {
       content_type = "text/plain"
-      message_body = "X-Origin-Header Not found"
+      message_body = "X-Origin-Secret Not found"
       status_code  = "403"
     }
   }

@@ -96,6 +96,7 @@ variable "ec2_1_key_name" {
 variable "ec2_1_private_ip" {
   description = "EC2-1 private IP"
   type        = string
+  default     = "10.0.2.184"
 }
 
 # -----------------------------------------------
@@ -172,6 +173,7 @@ variable "ec2_5_key_name" {
 variable "ec2_5_private_ip" {
   description = "EC2-5 private IP"
   type        = string
+  default     = "10.0.2.202"
 }
 
 # -----------------------------------------------
