@@ -16,3 +16,13 @@ output "thehive_instance_id" {
   description = "TheHive 서버 인스턴스 ID (SSM 접속용)"
   value       = aws_instance.thehive.id
 }
+
+output "misp_private_ip" {
+  description = "MISP 서버 프라이빗 IP"
+  value       = aws_instance.misp.private_ip
+}
+
+output "misp_instance_id" {
+  description = "MISP 서버 인스턴스 ID (SSM 접속용)"
+  value       = aws_instance.misp.id
+}

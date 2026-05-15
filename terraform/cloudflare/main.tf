@@ -11,6 +11,12 @@ terraform {
       version = "~> 4.0"
     }
   }
+
+  backend "s3" {
+    bucket = "woowa-beavers-tfstate"
+    key    = "cloudflare/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
 }
 
 provider "cloudflare" {

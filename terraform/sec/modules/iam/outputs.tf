@@ -11,3 +11,13 @@ output "thehive_ssm_role_arn" {
   description = "TheHive SSM IAM Role ARN"
   value       = aws_iam_role.thehive_ssm.arn
 }
+
+output "misp_instance_profile_name" {
+  description = "MISP SSM Instance Profile 이름"
+  value       = aws_iam_instance_profile.misp_ssm.name
+}
+
+output "misp_ssm_role_arn" {
+  description = "MISP SSM IAM Role ARN"
+  value       = aws_iam_role.misp_ssm.arn
+}
