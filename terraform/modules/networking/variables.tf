@@ -49,7 +49,6 @@ variable "bastion_nat_public_key" {
 variable "vpc_flow_logs_bucket_arn" {
   description = "VPC Flow Logs S3 버킷 ARN"
   type        = string
-  default     = "arn:aws:s3:::woowabeavers-vpc-flow-logs-apnortheast2"
 }
 
 variable "cloudflare_cidrs" {

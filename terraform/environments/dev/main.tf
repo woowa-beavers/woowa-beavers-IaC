@@ -23,6 +23,8 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_caller_identity" "current" {}
+
 module "networking" {
   source = "../../modules/networking"
 
@@ -34,6 +36,8 @@ module "networking" {
   nat_ami_id     = var.nat_ami_id
   nat_key_name   = var.nat_key_name
   nat_private_ip = var.nat_private_ip
+
+  vpc_flow_logs_bucket_arn = module.vpc_flow_logs.bucket_arn
 }
 
 module "compute" {
@@ -78,9 +82,9 @@ module "database" {
 module "cdn" {
   source = "../../modules/cdn"
 
-  vpc_id            = module.networking.vpc_id
-  public_subnet_ids = module.networking.public_subnet_ids
-  alb_sg_id         = module.networking.alb_sg_id
+  vpc_id                     = module.networking.vpc_id
+  public_subnet_ids          = module.networking.public_subnet_ids
+  alb_sg_id                  = module.networking.alb_sg_id
   certificate_arn            = var.certificate_arn
   cloudfront_certificate_arn = var.cloudfront_certificate_arn
   waf_web_acl_arn            = var.waf_web_acl_arn
@@ -109,6 +113,30 @@ module "shop_static" {
 module "vpc_flow_logs" {
   source      = "../../modules/storage"
   bucket_name = "woowabeavers-vpc-flow-logs-apnortheast2"
+
+  bucket_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Service = "delivery.logs.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "arn:aws:s3:::woowabeavers-vpc-flow-logs-apnortheast2/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl"      = "bucket-owner-full-control"
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      },
+      {
+        Effect    = "Allow"
+        Principal = { Service = "delivery.logs.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = "arn:aws:s3:::woowabeavers-vpc-flow-logs-apnortheast2"
+      }
+    ]
+  })
 }
 
 module "cloudtrail_logs_default" {
