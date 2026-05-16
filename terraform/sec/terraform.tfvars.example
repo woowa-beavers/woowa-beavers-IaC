@@ -4,8 +4,8 @@
 
 # Networking (MISP)
 misp_vpc_name            = "soc-misp-vpc"
-misp_public_subnet_name  = "soc-misp-public-subnet"
-misp_private_subnet_name = "soc-misp-private-subnet"
+misp_public_subnet_name  = "misp-public-subnet-a"
+misp_private_subnet_name = "misp-private-subnet-a"
 
 # Compute (TheHive)
 ec2_ami                   = "ami-xxxxxxxxxxxxxxxxx"
