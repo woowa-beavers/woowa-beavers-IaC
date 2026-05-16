@@ -1,5 +1,5 @@
 # terraform/environments/dev/main.tf
-# 역할: dev 환경 루트 모듈 - networking · compute · cdn 모듈을 조합하여 전체 dev 인프라 구성
+# 역할: dev 환경 루트 모듈 - networking · compute · cdn · database 모듈을 조합하여 전체 dev 인프라 구성
 # 흐름: variables.tf 입력값 → 각 모듈 호출 → outputs.tf 출력
 
 terraform {
@@ -26,10 +26,6 @@ provider "aws" {
 module "networking" {
   source = "../../modules/networking"
 
-  vpc_id               = var.vpc_id
-  public_subnet_id     = var.public_subnet_id
-  private_subnet_cidrs = var.private_subnet_cidrs
-
   bastion_ami_id     = var.bastion_ami_id
   bastion_key_name   = var.bastion_key_name
   bastion_private_ip = var.bastion_private_ip
@@ -42,10 +38,10 @@ module "networking" {
 module "compute" {
   source = "../../modules/compute"
 
-  vpc_id            = var.vpc_id
-  private_subnet_id = var.private_subnet_id
+  vpc_id            = module.networking.vpc_id
+  private_subnet_id = module.networking.private_subnet_id
   bastion_sg_id     = module.networking.bastion_sg_id
-  alb_sg_id         = var.alb_sg_id
+  alb_sg_id         = module.networking.alb_sg_id
 
   ec2_1_ami_id     = var.ec2_1_ami_id
   ec2_1_key_name   = var.ec2_1_key_name
@@ -71,8 +67,8 @@ module "compute" {
 module "database" {
   source = "../../modules/database"
 
-  db_subnet_ids        = var.db_subnet_ids
-  rds_sg_id            = var.rds_sg_id
+  db_subnet_ids        = module.networking.db_subnet_ids
+  rds_sg_id            = module.networking.rds_sg_id
   auth_db_password     = var.auth_db_password
   commerce_db_password = var.commerce_db_password
 }
@@ -80,9 +76,9 @@ module "database" {
 module "cdn" {
   source = "../../modules/cdn"
 
-  vpc_id            = var.vpc_id
-  public_subnet_ids = var.public_subnet_ids
-  alb_sg_id         = var.alb_sg_id
+  vpc_id            = module.networking.vpc_id
+  public_subnet_ids = module.networking.public_subnet_ids
+  alb_sg_id         = module.networking.alb_sg_id
   certificate_arn   = var.certificate_arn
 
   ec2_1_instance_id = module.compute.ec2_1_instance_id

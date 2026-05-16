@@ -9,40 +9,6 @@ variable "aws_region" {
 }
 
 # -----------------------------------------------
-# 공통 네트워크
-# -----------------------------------------------
-variable "vpc_id" {
-  description = "VPC ID"
-  type        = string
-}
-
-variable "public_subnet_id" {
-  description = "Public subnet ID for bastion and NAT instance"
-  type        = string
-}
-
-variable "public_subnet_ids" {
-  description = "Public subnet IDs for ALB (different AZs, 2 or more)"
-  type        = list(string)
-}
-
-variable "private_subnet_id" {
-  description = "Private subnet ID for EC2 instances"
-  type        = string
-}
-
-variable "private_subnet_cidrs" {
-  description = "Private subnet CIDR blocks (private1 + private2)"
-  type        = list(string)
-  default     = ["10.0.2.0/24", "10.0.3.0/24"]
-}
-
-variable "alb_sg_id" {
-  description = "ALB security group ID"
-  type        = string
-}
-
-# -----------------------------------------------
 # Networking 모듈 - Bastion
 # -----------------------------------------------
 variable "bastion_ami_id" {
@@ -53,6 +19,7 @@ variable "bastion_ami_id" {
 variable "bastion_key_name" {
   description = "EC2 key pair name for bastion"
   type        = string
+  default     = "woowa-beavers-bastion-EC2-key"
 }
 
 variable "bastion_private_ip" {
@@ -72,6 +39,7 @@ variable "nat_ami_id" {
 variable "nat_key_name" {
   description = "EC2 key pair name for NAT"
   type        = string
+  default     = "woowa-beavers-bastion-EC2-key"
 }
 
 variable "nat_private_ip" {
@@ -91,6 +59,7 @@ variable "ec2_1_ami_id" {
 variable "ec2_1_key_name" {
   description = "EC2 key pair name for EC2-1"
   type        = string
+  default     = "woowa-beavers-keypair"
 }
 
 variable "ec2_1_private_ip" {
@@ -110,6 +79,7 @@ variable "ec2_2_ami_id" {
 variable "ec2_2_key_name" {
   description = "EC2 key pair name for EC2-2"
   type        = string
+  default     = "woowa-beavers-keypair"
 }
 
 variable "ec2_2_private_ip" {
@@ -129,6 +99,7 @@ variable "ec2_3_ami_id" {
 variable "ec2_3_key_name" {
   description = "EC2 key pair name for EC2-3"
   type        = string
+  default     = "woowa-beavers-keypair"
 }
 
 variable "ec2_3_private_ip" {
@@ -148,6 +119,7 @@ variable "ec2_4_ami_id" {
 variable "ec2_4_key_name" {
   description = "EC2 key pair name for EC2-4"
   type        = string
+  default     = "woowa-beavers-keypair"
 }
 
 variable "ec2_4_private_ip" {
@@ -179,16 +151,6 @@ variable "ec2_5_private_ip" {
 # -----------------------------------------------
 # Database 모듈 - RDS
 # -----------------------------------------------
-variable "db_subnet_ids" {
-  description = "DB 서브넷 그룹용 서브넷 ID 목록 (최소 2개, 다른 AZ)"
-  type        = list(string)
-}
-
-variable "rds_sg_id" {
-  description = "RDS 보안 그룹 ID (Woowa-Beavers-RDS-SG)"
-  type        = string
-}
-
 variable "auth_db_password" {
   description = "Auth RDS master password (GitHub Secrets: TF_VAR_AUTH_DB_PASSWORD)"
   type        = string

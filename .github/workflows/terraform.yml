@@ -81,11 +81,6 @@ jobs:
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ secrets.DEV_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "TF_VAR_vpc_id=${{ secrets.DEV_VPC_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_public_subnet_id=${{ secrets.DEV_PUBLIC_SUBNET_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_public_subnet_ids=${{ secrets.DEV_PUBLIC_SUBNET_IDS }}" >> $GITHUB_ENV
-          echo "TF_VAR_private_subnet_id=${{ secrets.DEV_PRIVATE_SUBNET_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_alb_sg_id=${{ secrets.DEV_ALB_SG_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_bastion_ami_id=${{ secrets.DEV_BASTION_AMI_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_bastion_key_name=${{ secrets.DEV_BASTION_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_nat_ami_id=${{ secrets.DEV_NAT_AMI_ID }}" >> $GITHUB_ENV
@@ -99,8 +94,6 @@ jobs:
           echo "TF_VAR_ec2_4_ami_id=${{ secrets.DEV_EC2_4_AMI_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_4_key_name=${{ secrets.DEV_EC2_4_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_5_ami_id=${{ secrets.DEV_EC2_5_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_db_subnet_ids=${{ secrets.DEV_DB_SUBNET_IDS }}" >> $GITHUB_ENV
-          echo "TF_VAR_rds_sg_id=${{ secrets.DEV_RDS_SG_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_certificate_arn=${{ secrets.DEV_CERTIFICATE_ARN }}" >> $GITHUB_ENV
           echo "TF_VAR_auth_db_password=${{ secrets.DEV_AUTH_DB_PASSWORD }}" >> $GITHUB_ENV
           echo "TF_VAR_commerce_db_password=${{ secrets.DEV_COMMERCE_DB_PASSWORD }}" >> $GITHUB_ENV
