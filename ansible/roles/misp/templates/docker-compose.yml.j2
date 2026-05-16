@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  misp:
+    image: coolacid/misp-docker:latest
+    ports:
+      - "8080:80" 
+    environment:
+      - BASE_URL=https://{{ misp_external_domain }}
+      - MISP_ADMIN_EMAIL={{ misp_admin_email | default('admin@admin.test') }}
+      - MISP_ADMIN_PASSPHRASE={{ misp_admin_pw | default('admin') }}
+    volumes:
+      - /opt/misp/data:/var/www/MISP
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel run --token {{ cf_token }} 

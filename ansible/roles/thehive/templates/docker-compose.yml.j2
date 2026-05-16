@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  cassandra:
+    image: cassandra:4
+    restart: unless-stopped
+    environment:
+      - CASSANDRA_CLUSTER_NAME=thp
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=1G
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  thehive:
+    image: strangebee/thehive:5-latest
+    restart: unless-stopped
+    depends_on:
+      cassandra:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    ports:
+      - "9000:9000"
+    volumes:
+      - /opt/thehive/application.conf:/etc/thehive/application.conf
+    environment:
+      - JVM_OPTS=-Xms512m -Xmx512m
+
+volumes:
+  cassandra_data:
+  elasticsearch_data:
