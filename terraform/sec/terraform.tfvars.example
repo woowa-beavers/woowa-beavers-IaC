@@ -2,21 +2,17 @@
 # 역할: sec 루트 모듈 변수 예시 (실제 값은 terraform.tfvars에 작성, gitignore 처리)
 # 흐름: 이 파일 복사 → terraform.tfvars 생성 → 실제 값 입력
 
-# Networking (MISP)
-misp_vpc_name            = "soc-misp-vpc"
-misp_public_subnet_name  = "misp-public-subnet-a"
-misp_private_subnet_name = "misp-private-subnet-a"
+# Networking
+# misp_project_name = "soc-misp"  # 기본값 사용 가능
 
 # Compute (TheHive)
-ec2_ami                   = "ami-xxxxxxxxxxxxxxxxx"
-thehive_vpc_id            = "vpc-xxxxxxxxxxxxxxxxx"
-thehive_public_subnet_id  = "subnet-xxxxxxxxxxxxxxxxx"
-thehive_private_subnet_id = "subnet-xxxxxxxxxxxxxxxxx"
-thehive_admin_cidr        = "x.x.x.x/32"
-thehive_nat_eip_alloc_id  = "eipalloc-xxxxxxxxxxxxxxxxx"
+ec2_ami            = "ami-xxxxxxxxxxxxxxxxx"
+thehive_admin_cidr = "x.x.x.x/32"
+# thehive_public_key = "ssh-rsa AAAA..."  # GitHub Secrets: TF_VAR_THEHIVE_PUBLIC_KEY
 
 # Compute (MISP)
 misp_ami = "ami-xxxxxxxxxxxxxxxxx"
+# misp_public_key = "ssh-rsa AAAA..."  # GitHub Secrets: TF_VAR_MISP_PUBLIC_KEY
 
 # Security
 sec_account_id = "xxxxxxxxxxxx"

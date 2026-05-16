@@ -94,7 +94,12 @@ jobs:
           echo "TF_VAR_ec2_4_ami_id=${{ secrets.DEV_EC2_4_AMI_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_4_key_name=${{ secrets.DEV_EC2_4_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_5_ami_id=${{ secrets.DEV_EC2_5_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_5_key_name=${{ secrets.DEV_EC2_5_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_bastion_nat_public_key=${{ secrets.TF_VAR_BASTION_NAT_PUBLIC_KEY }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_public_key=${{ secrets.TF_VAR_EC2_PUBLIC_KEY }}" >> $GITHUB_ENV
           echo "TF_VAR_certificate_arn=${{ secrets.DEV_CERTIFICATE_ARN }}" >> $GITHUB_ENV
+          echo "TF_VAR_cloudfront_certificate_arn=${{ secrets.DEV_CLOUDFRONT_CERTIFICATE_ARN }}" >> $GITHUB_ENV
+          echo "TF_VAR_waf_web_acl_arn=${{ secrets.DEV_WAF_WEB_ACL_ARN }}" >> $GITHUB_ENV
           echo "TF_VAR_auth_db_password=${{ secrets.DEV_AUTH_DB_PASSWORD }}" >> $GITHUB_ENV
           echo "TF_VAR_commerce_db_password=${{ secrets.DEV_COMMERCE_DB_PASSWORD }}" >> $GITHUB_ENV
           echo "TF_VAR_x_origin_secret=${{ secrets.DEV_X_ORIGIN_SECRET }}" >> $GITHUB_ENV
@@ -109,15 +114,10 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.SEC_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_ami=${{ secrets.SEC_EC2_AMI }}" >> $GITHUB_ENV
           echo "TF_VAR_misp_ami=${{ secrets.SEC_MISP_AMI }}" >> $GITHUB_ENV
-          echo "TF_VAR_thehive_vpc_id=${{ secrets.SEC_THEHIVE_VPC_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_thehive_public_subnet_id=${{ secrets.SEC_THEHIVE_PUBLIC_SUBNET_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_thehive_private_subnet_id=${{ secrets.SEC_THEHIVE_PRIVATE_SUBNET_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_thehive_admin_cidr=${{ secrets.SEC_THEHIVE_ADMIN_CIDR }}" >> $GITHUB_ENV
-          echo "TF_VAR_thehive_nat_eip_alloc_id=${{ secrets.SEC_THEHIVE_NAT_EIP_ALLOC_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_thehive_public_key=${{ secrets.TF_VAR_THEHIVE_PUBLIC_KEY }}" >> $GITHUB_ENV
+          echo "TF_VAR_misp_public_key=${{ secrets.TF_VAR_MISP_PUBLIC_KEY }}" >> $GITHUB_ENV
           echo "TF_VAR_sec_account_id=${{ secrets.SEC_ACCOUNT_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_misp_vpc_name=soc-misp-vpc" >> $GITHUB_ENV
-          echo "TF_VAR_misp_public_subnet_name=soc-misp-public-subnet" >> $GITHUB_ENV
-          echo "TF_VAR_misp_private_subnet_name=soc-misp-private-subnet" >> $GITHUB_ENV
 
       # ==========================================
       # cloudflare (ops 계정 S3 백엔드 접근)

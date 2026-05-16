@@ -24,15 +24,12 @@ provider "aws" {
 }
 
 # ==========================================
-# 1. Networking (MISP VPC/서브넷/NAT GW)
+# 1. Networking (MISP·TheHive VPC/서브넷/IGW/NAT GW)
 # ==========================================
 module "networking" {
   source = "./modules/networking"
 
-  misp_vpc_name            = var.misp_vpc_name
-  misp_public_subnet_name  = var.misp_public_subnet_name
-  misp_private_subnet_name = var.misp_private_subnet_name
-  misp_project_name        = var.misp_project_name
+  misp_project_name = var.misp_project_name
 }
 
 # ==========================================
@@ -49,17 +46,18 @@ module "compute" {
   source = "./modules/compute"
 
   ec2_ami                       = var.ec2_ami
-  thehive_vpc_id                = var.thehive_vpc_id
-  thehive_public_subnet_id      = var.thehive_public_subnet_id
-  thehive_private_subnet_id     = var.thehive_private_subnet_id
+  thehive_vpc_id                = module.networking.thehive_vpc_id
+  thehive_public_subnet_id      = module.networking.thehive_public_subnet_id
+  thehive_private_subnet_id     = module.networking.thehive_private_subnet_id
   thehive_admin_cidr            = var.thehive_admin_cidr
-  thehive_nat_eip_alloc_id      = var.thehive_nat_eip_alloc_id
   thehive_instance_profile_name = module.iam.thehive_instance_profile_name
+  thehive_public_key            = var.thehive_public_key
 
   misp_ami                   = var.misp_ami
   misp_vpc_id                = module.networking.misp_vpc_id
   misp_private_subnet_id     = module.networking.misp_private_subnet_id
   misp_instance_profile_name = module.iam.misp_instance_profile_name
+  misp_public_key            = var.misp_public_key
 }
 
 # ==========================================

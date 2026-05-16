@@ -11,6 +11,16 @@ variable "aws_region" {
 # -----------------------------------------------
 # Networking 모듈 - Bastion
 # -----------------------------------------------
+variable "bastion_nat_public_key" {
+  description = "Bastion + NAT EC2 Key Pair 공개키 (GitHub Secrets: TF_VAR_BASTION_NAT_PUBLIC_KEY)"
+  type        = string
+}
+
+variable "ec2_public_key" {
+  description = "EC2 1~5 공용 Key Pair 공개키 (GitHub Secrets: TF_VAR_EC2_PUBLIC_KEY)"
+  type        = string
+}
+
 variable "bastion_ami_id" {
   description = "Bastion AMI ID"
   type        = string
@@ -167,7 +177,17 @@ variable "commerce_db_password" {
 # CDN 모듈 - ALB
 # -----------------------------------------------
 variable "certificate_arn" {
-  description = "ACM certificate ARN for HTTPS listener"
+  description = "ACM certificate ARN for ALB HTTPS listener (ap-northeast-2)"
+  type        = string
+}
+
+variable "cloudfront_certificate_arn" {
+  description = "ACM certificate ARN for CloudFront (us-east-1 필수)"
+  type        = string
+}
+
+variable "waf_web_acl_arn" {
+  description = "CloudFront WAF Web ACL ARN (us-east-1 global)"
   type        = string
 }
 

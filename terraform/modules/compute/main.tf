@@ -3,6 +3,18 @@
 # 흐름: variables.tf 입력값 → AWS 리소스 생성 → outputs.tf 출력
 
 # -----------------------------------------------
+# EC2 Key Pair (EC2 1~5 공용)
+# -----------------------------------------------
+resource "aws_key_pair" "ec2" {
+  key_name   = var.ec2_1_key_name
+  public_key = var.ec2_public_key
+
+  tags = {
+    Name = var.ec2_1_key_name
+  }
+}
+
+# -----------------------------------------------
 # EC2-1 Product
 # -----------------------------------------------
 resource "aws_security_group" "ec2_1_sg" {

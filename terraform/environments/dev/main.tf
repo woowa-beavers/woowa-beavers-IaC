@@ -23,21 +23,27 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_caller_identity" "current" {}
+
 module "networking" {
   source = "../../modules/networking"
 
-  bastion_ami_id     = var.bastion_ami_id
-  bastion_key_name   = var.bastion_key_name
-  bastion_private_ip = var.bastion_private_ip
+  bastion_ami_id         = var.bastion_ami_id
+  bastion_key_name       = var.bastion_key_name
+  bastion_private_ip     = var.bastion_private_ip
+  bastion_nat_public_key = var.bastion_nat_public_key
 
   nat_ami_id     = var.nat_ami_id
   nat_key_name   = var.nat_key_name
   nat_private_ip = var.nat_private_ip
+
+  vpc_flow_logs_bucket_arn = module.vpc_flow_logs.bucket_arn
 }
 
 module "compute" {
   source = "../../modules/compute"
 
+  ec2_public_key    = var.ec2_public_key
   vpc_id            = module.networking.vpc_id
   private_subnet_id = module.networking.private_subnet_id
   bastion_sg_id     = module.networking.bastion_sg_id
@@ -76,10 +82,12 @@ module "database" {
 module "cdn" {
   source = "../../modules/cdn"
 
-  vpc_id            = module.networking.vpc_id
-  public_subnet_ids = module.networking.public_subnet_ids
-  alb_sg_id         = module.networking.alb_sg_id
-  certificate_arn   = var.certificate_arn
+  vpc_id                     = module.networking.vpc_id
+  public_subnet_ids          = module.networking.public_subnet_ids
+  alb_sg_id                  = module.networking.alb_sg_id
+  certificate_arn            = var.certificate_arn
+  cloudfront_certificate_arn = var.cloudfront_certificate_arn
+  waf_web_acl_arn            = var.waf_web_acl_arn
 
   ec2_1_instance_id = module.compute.ec2_1_instance_id
   ec2_2_instance_id = module.compute.ec2_2_instance_id
@@ -105,6 +113,30 @@ module "shop_static" {
 module "vpc_flow_logs" {
   source      = "../../modules/storage"
   bucket_name = "woowabeavers-vpc-flow-logs-apnortheast2"
+
+  bucket_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = { Service = "delivery.logs.amazonaws.com" }
+        Action    = "s3:PutObject"
+        Resource  = "arn:aws:s3:::woowabeavers-vpc-flow-logs-apnortheast2/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl"      = "bucket-owner-full-control"
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      },
+      {
+        Effect    = "Allow"
+        Principal = { Service = "delivery.logs.amazonaws.com" }
+        Action    = "s3:GetBucketAcl"
+        Resource  = "arn:aws:s3:::woowabeavers-vpc-flow-logs-apnortheast2"
+      }
+    ]
+  })
 }
 
 module "cloudtrail_logs_default" {
