@@ -1,0 +1,25 @@
+---
+- name: TheHive 데이터 디렉토리 생성
+  file:
+    path: /opt/thehive
+    state: directory
+    mode: '0755'
+
+- name: TheHive 구성 파일 배포
+  template:
+    src: application.conf.j2
+    dest: /opt/thehive/application.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Docker Compose 파일 배포
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/thehive/docker-compose.yml
+
+- name: TheHive & Cortex 실행
+  community.docker.docker_compose_v2:
+    project_src: /opt/thehive
+    state: present
+    wait: yes  # 컨테이너가 뜰 때까지 기다림

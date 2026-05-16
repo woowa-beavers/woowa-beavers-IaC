@@ -1,0 +1,24 @@
+---
+# MISP 설치 (AWS SEC 계정 - Private IP)
+- name: Deploy MISP on AWS Private Subnet
+  hosts: misp_server
+  become: yes
+  gather_facts: no # <-- 접속해서 서버 정보를 가져오지 마라! (테스트용)
+  roles:
+    - misp
+
+# TheHive 설치 (AWS SEC 계정 - Private IP)
+- name: Deploy TheHive & Cortex on AWS Private Subnet
+  hosts: thehive_server
+  become: yes
+  gather_facts: no # <-- 접속해서 서버 정보를 가져오지 마라! (테스트용)
+  roles:
+    - thehive
+
+# Wazuh 설치 (홈서버 - Tailscale IP)
+- name: Deploy Wazuh Manager on Home Server
+  hosts: wazuh_manager
+  become: yes
+  gather_facts: no # <-- 접속해서 서버 정보를 가져오지 마라! (테스트용)
+  roles:
+    - wazuh

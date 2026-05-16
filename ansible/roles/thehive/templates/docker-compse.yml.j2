@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  thehive:
+    image: strangebee/thehive:latest
+    ports:
+      - "9000:9000"
+    volumes:
+      - /opt/thehive/application.conf:/etc/thehive/application.conf
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+    # 나머지 Cassandra, Elasticsearch 설정 생략

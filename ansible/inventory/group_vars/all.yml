@@ -1,0 +1,15 @@
+# --- [Network & IP] ---
+# 테라폼 실행 후 나온 결과를 여기 한 번만 적으면 됨 (또는 기본값 유지)
+thehive_private_ip: "10.0.0.1" 
+misp_private_ip:    "10.0.0.2"
+nat_public_ip:      "3.x.x.x"
+wazuh_tailscale_ip: "100.x.x.x"
+
+# --- [SSH & Auth] ---
+# PEM 키 경로도 변수화 (내 컴퓨터 환경에 맞게 한 번만 수정)
+ssh_key_path: "~/.ssh/woowa-beavers-keypair.pem"
+home_user:    "ann"
+
+# --- [API Tokens] ---
+cf_token:     "YOUR_CF_TOKEN"
+misp_api_key: "YOUR_MISP_KEY"

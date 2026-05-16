@@ -1,0 +1,19 @@
+---
+- name: MISP 데이터 디렉토리 생성
+  file:
+    path: /opt/misp/data
+    state: directory
+    mode: '0755'
+    owner: 1000 # Docker 내부 권한에 맞춤
+
+- name: MISP Docker Compose 배포
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/misp/docker-compose.yml
+    mode: '0644'
+
+- name: MISP 및 Cloudflare Tunnel 실행
+  community.docker.docker_compose_v2:
+    project_src: /opt/misp
+    state: present
+    wait: yes

@@ -1,0 +1,22 @@
+# TheHive Core Settings
+play.http.secret.key="{{ play_secret_key | default('changeme12345') }}"
+
+# MISP 연동 설정
+misp {
+  interval: 1 hour
+  servers: [
+    {
+      name: "Private-MISP"
+      url: "http://{{ misp_private_ip }}:8080" 
+      key: "{{ misp_api_key }}"             
+    }
+  ]
+}
+
+# Cortex 연동
+# 변수 확인 후 다를 시 변경 필요!
+# cortex {
+#   servers: [
+#     { name: "Local-Cortex", url: "http://cortex:9001", auth: { type: "bearer", key: "{{ cortex_api_key }}" } }
+#   ]
+# }
