@@ -2,6 +2,8 @@
 # 역할: sec 계정 보안 서비스 모듈 - GuardDuty, SecurityHub, Config 관리
 # 흐름: variables.tf 입력값 → SecurityHub → Config → GuardDuty 활성화
 
+data "aws_region" "current" {}
+
 # ==========================================
 # SecurityHub
 # ==========================================
@@ -15,7 +17,7 @@ resource "aws_securityhub_standards_subscription" "cis" {
 }
 
 resource "aws_securityhub_standards_subscription" "aws_foundational" {
-  standards_arn = "arn:aws:securityhub:ap-northeast-2::standards/aws-foundational-security-best-practices/v/1.0.0"
+  standards_arn = "arn:aws:securityhub:${data.aws_region.current.name}::standards/aws-foundational-security-best-practices/v/1.0.0"
   depends_on    = [aws_securityhub_account.main]
 }
 

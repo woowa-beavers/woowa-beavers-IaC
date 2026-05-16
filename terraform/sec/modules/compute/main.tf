@@ -24,7 +24,7 @@ resource "aws_key_pair" "misp" {
 # ==========================================
 resource "aws_security_group" "thehive_nat" {
   name        = "thehive-nat-sg"
-  description = "TheHive NAT 인스턴스 보안그룹"
+  description = "TheHive NAT instance security group"
   vpc_id      = var.thehive_vpc_id
 
   ingress {
@@ -50,7 +50,7 @@ resource "aws_security_group" "thehive_nat" {
 # ==========================================
 resource "aws_security_group" "thehive" {
   name        = "thehive-sg"
-  description = "TheHive 서버 보안그룹"
+  description = "TheHive server security group"
   vpc_id      = var.thehive_vpc_id
 
   ingress {
@@ -92,7 +92,7 @@ resource "aws_security_group" "thehive" {
 # ==========================================
 resource "aws_security_group" "misp" {
   name        = "misp-sg"
-  description = "MISP 서버 보안그룹"
+  description = "MISP server security group"
   vpc_id      = var.misp_vpc_id
 
   ingress {
