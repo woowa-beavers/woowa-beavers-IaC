@@ -231,7 +231,7 @@ resource "aws_instance" "ec2_4_order" {
 }
 
 # -----------------------------------------------
-# EC2-5
+# EC2-5 (Red Team 랩 머신 - Credential Discovery)
 # -----------------------------------------------
 resource "aws_security_group" "ec2_5_sg" {
   name        = "woowa-beavers-ec2-5-sg"
@@ -246,14 +246,6 @@ resource "aws_security_group" "ec2_5_sg" {
     description     = "SSH from Bastion"
   }
 
-  ingress {
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
-    security_groups = [var.alb_sg_id]
-    description     = "FastAPI from ALB"
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -266,12 +258,77 @@ resource "aws_security_group" "ec2_5_sg" {
   }
 }
 
+# EC2-5 IAM Role — AssumeRole to admin-role 허용
+resource "aws_iam_role" "ec2_5" {
+  name = "woowa-beavers-ec2-5-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+
+  tags = { Name = "woowa-beavers-ec2-5-role" }
+}
+
+resource "aws_iam_policy" "ec2_5_assume_admin" {
+  name = "woowa-beavers-ec2-5-assume-admin-role"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid      = "AllowAssumeAdminRole"
+      Effect   = "Allow"
+      Action   = "sts:AssumeRole"
+      Resource = aws_iam_role.admin.arn
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_5_assume_admin" {
+  role       = aws_iam_role.ec2_5.name
+  policy_arn = aws_iam_policy.ec2_5_assume_admin.arn
+}
+
+resource "aws_iam_instance_profile" "ec2_5" {
+  name = "woowa-beavers-ec2-5-role"
+  role = aws_iam_role.ec2_5.name
+}
+
+# Admin Role — EC2-5가 AssumeRole하는 최종 권한 상승 대상
+resource "aws_iam_role" "admin" {
+  name = "woowa-beavers-admin-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid    = "AllowEC25RoleToAssume"
+      Effect = "Allow"
+      Principal = {
+        AWS = aws_iam_role.ec2_5.arn
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+
+  tags = { Name = "woowa-beavers-admin-role" }
+}
+
+resource "aws_iam_role_policy_attachment" "admin_full" {
+  role       = aws_iam_role.admin.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
 resource "aws_instance" "ec2_5" {
-  ami           = var.ec2_5_ami_id
-  instance_type = "t3.micro"
-  subnet_id     = var.private_subnet_id
-  private_ip    = var.ec2_5_private_ip
-  key_name      = var.ec2_5_key_name
+  ami                  = var.ec2_5_ami_id
+  instance_type        = "t3.micro"
+  subnet_id            = var.private_subnet_id
+  private_ip           = var.ec2_5_private_ip
+  key_name             = var.ec2_5_key_name
+  iam_instance_profile = aws_iam_instance_profile.ec2_5.name
 
   associate_public_ip_address = false
   vpc_security_group_ids      = [aws_security_group.ec2_5_sg.id]

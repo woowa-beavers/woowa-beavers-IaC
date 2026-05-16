@@ -42,6 +42,11 @@ ec2_4_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_4_key_name   = "woowa-beavers-keypair"
 ec2_4_private_ip = "10.0.2.xxx"
 
+# EC2-5 Red Team 랩 (Credential Discovery)
+ec2_5_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+ec2_5_key_name   = "woowa-beavers-keypair"
+ec2_5_private_ip = "10.0.2.202"
+
 # RDS
 db_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-xxxxxxxxxxxxxxxxx"]
 rds_sg_id     = "sg-xxxxxxxxxxxxxxxxx"
