@@ -1,13 +1,13 @@
 ---
 - name: MISP 데이터 디렉토리 생성
-  file:
+  ansible.builtin.file:
     path: /opt/misp/data
     state: directory
     mode: '0755'
-    owner: 1000 # Docker 내부 권한에 맞춤
+    owner: 1000
 
 - name: MISP Docker Compose 배포
-  template:
+  ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: /opt/misp/docker-compose.yml
     mode: '0644'
@@ -16,4 +16,4 @@
   community.docker.docker_compose_v2:
     project_src: /opt/misp
     state: present
-    wait: yes
+    wait: true

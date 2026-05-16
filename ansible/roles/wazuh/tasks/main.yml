@@ -1,22 +1,22 @@
 ---
 - name: Wazuh Manager 설치
-  shell: |
+  ansible.builtin.shell: |
     if [ ! -f /var/ossec/bin/wazuh-control ]; then
       curl -sO https://packages.wazuh.com/4.x/wazuh-install.sh && bash ./wazuh-install.sh -a
     fi
   args:
-    creates: /var/ossec/bin/wazuh-control # 이미 설치되어 있으면 건너뜀
+    creates: /var/ossec/bin/wazuh-control
 
 - name: MISP 연동 스크립트 배포
-  template:
+  ansible.builtin.template:
     src: custom-misp.py.j2
     dest: /var/ossec/integrations/custom-misp.py
     owner: root
     group: wazuh
-    mode: '0750' # 실행 권한 
+    mode: '0750'
 
 - name: OSSEC 설정에 MISP 연동 블록 추가
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /var/ossec/etc/ossec.conf
     insertafter: "<ossec_config>"
     marker: ""
@@ -29,6 +29,6 @@
       </integration>
 
 - name: Wazuh Manager 재시작
-  service:
+  ansible.builtin.service:
     name: wazuh-manager
     state: restarted
