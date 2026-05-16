@@ -4,6 +4,10 @@
 
 aws_region = "ap-northeast-2"
 
+# Key Pairs (공개키 전체 문자열 입력 — GitHub Secrets: TF_VAR_BASTION_NAT_PUBLIC_KEY / TF_VAR_EC2_PUBLIC_KEY)
+# bastion_nat_public_key = "ssh-rsa AAAA..."
+# ec2_public_key         = "ssh-rsa AAAA..."
+
 # Bastion
 bastion_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 bastion_key_name   = "woowa-beavers-bastion-EC2-key"

@@ -11,6 +11,16 @@ variable "aws_region" {
 # -----------------------------------------------
 # Networking 모듈 - Bastion
 # -----------------------------------------------
+variable "bastion_nat_public_key" {
+  description = "Bastion + NAT EC2 Key Pair 공개키 (GitHub Secrets: TF_VAR_BASTION_NAT_PUBLIC_KEY)"
+  type        = string
+}
+
+variable "ec2_public_key" {
+  description = "EC2 1~5 공용 Key Pair 공개키 (GitHub Secrets: TF_VAR_EC2_PUBLIC_KEY)"
+  type        = string
+}
+
 variable "bastion_ami_id" {
   description = "Bastion AMI ID"
   type        = string

@@ -9,23 +9,8 @@ variable "aws_region" {
 }
 
 # ==========================================
-# Networking (MISP)
+# Networking
 # ==========================================
-variable "misp_vpc_name" {
-  description = "MISP VPC Name 태그"
-  type        = string
-}
-
-variable "misp_public_subnet_name" {
-  description = "MISP NAT Gateway용 퍼블릭 서브넷 Name 태그"
-  type        = string
-}
-
-variable "misp_private_subnet_name" {
-  description = "MISP EC2가 위치한 프라이빗 서브넷 Name 태그"
-  type        = string
-}
-
 variable "misp_project_name" {
   description = "MISP 프로젝트 이름 (리소스 태그용)"
   type        = string
@@ -40,28 +25,13 @@ variable "ec2_ami" {
   type        = string
 }
 
-variable "thehive_vpc_id" {
-  description = "TheHive VPC ID"
-  type        = string
-}
-
-variable "thehive_public_subnet_id" {
-  description = "TheHive NAT 인스턴스용 퍼블릭 서브넷 ID"
-  type        = string
-}
-
-variable "thehive_private_subnet_id" {
-  description = "TheHive 서버용 프라이빗 서브넷 ID"
-  type        = string
-}
-
 variable "thehive_admin_cidr" {
-  description = "TheHive API 접근 허용 관리자 IP CIDR (예: 211.215.118.93/32)"
+  description = "TheHive API 접근 허용 관리자 IP CIDR (예: x.x.x.x/32)"
   type        = string
 }
 
-variable "thehive_nat_eip_alloc_id" {
-  description = "NAT 인스턴스에 연결할 EIP Allocation ID"
+variable "thehive_public_key" {
+  description = "TheHive 서버 EC2 Key Pair 공개키 (GitHub Secrets: TF_VAR_THEHIVE_PUBLIC_KEY)"
   type        = string
 }
 
@@ -70,6 +40,11 @@ variable "thehive_nat_eip_alloc_id" {
 # ==========================================
 variable "misp_ami" {
   description = "MISP EC2 AMI ID (Ubuntu 24.04)"
+  type        = string
+}
+
+variable "misp_public_key" {
+  description = "MISP 서버 EC2 Key Pair 공개키 (GitHub Secrets: TF_VAR_MISP_PUBLIC_KEY)"
   type        = string
 }
 
@@ -101,4 +76,3 @@ variable "waf_logs_bucket_name" {
   type        = string
   default     = "soc-waf-logs-126378327873"
 }
-

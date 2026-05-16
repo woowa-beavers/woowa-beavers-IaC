@@ -1,40 +1,89 @@
 # terraform/sec/modules/networking/main.tf
-# 역할: sec 계정 네트워킹 모듈 - MISP VPC/서브넷 조회, NAT Gateway 구성
-# 흐름: variables.tf 입력값 → VPC·Subnet 조회 → EIP·NAT Gateway 생성 → Private Route 추가
+# 역할: sec 계정 네트워킹 - MISP VPC/서브넷/IGW/NAT GW, TheHive VPC/서브넷/IGW 전체 생성
+# 흐름: variables.tf 입력값 → VPC·서브넷·IGW·라우트 테이블 생성 → NAT GW → outputs.tf 출력
 
 # ==========================================
-# MISP VPC / Subnet 조회
+# MISP VPC
 # ==========================================
-data "aws_vpc" "misp" {
+resource "aws_vpc" "misp" {
+  cidr_block           = var.misp_vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
   tags = {
-    Name = var.misp_vpc_name
+    Name      = "soc-misp-vpc"
+    Project   = var.misp_project_name
+    ManagedBy = "terraform"
   }
 }
 
-data "aws_subnet" "misp_public" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.misp.id]
-  }
+resource "aws_internet_gateway" "misp" {
+  vpc_id = aws_vpc.misp.id
 
   tags = {
-    Name = var.misp_public_subnet_name
+    Name      = "${var.misp_project_name}-igw"
+    Project   = var.misp_project_name
+    ManagedBy = "terraform"
   }
 }
 
-data "aws_subnet" "misp_private" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.misp.id]
-  }
+resource "aws_subnet" "misp_public" {
+  vpc_id            = aws_vpc.misp.id
+  cidr_block        = var.misp_public_subnet_cidr
+  availability_zone = "ap-northeast-2a"
 
   tags = {
-    Name = var.misp_private_subnet_name
+    Name      = "misp-public-subnet-a"
+    Project   = var.misp_project_name
+    ManagedBy = "terraform"
   }
 }
 
-data "aws_route_table" "misp_private" {
-  subnet_id = data.aws_subnet.misp_private.id
+resource "aws_subnet" "misp_private" {
+  vpc_id            = aws_vpc.misp.id
+  cidr_block        = var.misp_private_subnet_cidr
+  availability_zone = "ap-northeast-2a"
+
+  tags = {
+    Name      = "misp-private-subnet-a"
+    Project   = var.misp_project_name
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_route_table" "misp_public" {
+  vpc_id = aws_vpc.misp.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.misp.id
+  }
+
+  tags = {
+    Name      = "${var.misp_project_name}-public-rtb"
+    Project   = var.misp_project_name
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_route_table_association" "misp_public" {
+  subnet_id      = aws_subnet.misp_public.id
+  route_table_id = aws_route_table.misp_public.id
+}
+
+resource "aws_route_table" "misp_private" {
+  vpc_id = aws_vpc.misp.id
+
+  tags = {
+    Name      = "${var.misp_project_name}-private-rtb"
+    Project   = var.misp_project_name
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_route_table_association" "misp_private" {
+  subnet_id      = aws_subnet.misp_private.id
+  route_table_id = aws_route_table.misp_private.id
 }
 
 # ==========================================
@@ -52,7 +101,7 @@ resource "aws_eip" "misp_nat" {
 
 resource "aws_nat_gateway" "misp" {
   allocation_id = aws_eip.misp_nat.id
-  subnet_id     = data.aws_subnet.misp_public.id
+  subnet_id     = aws_subnet.misp_public.id
 
   tags = {
     Name      = "${var.misp_project_name}-nat-gateway"
@@ -62,7 +111,71 @@ resource "aws_nat_gateway" "misp" {
 }
 
 resource "aws_route" "misp_private_to_nat" {
-  route_table_id         = data.aws_route_table.misp_private.id
+  route_table_id         = aws_route_table.misp_private.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.misp.id
+}
+
+# ==========================================
+# TheHive VPC
+# ==========================================
+resource "aws_vpc" "thehive" {
+  cidr_block           = var.thehive_vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Name      = "thehive-vpc"
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_internet_gateway" "thehive" {
+  vpc_id = aws_vpc.thehive.id
+
+  tags = {
+    Name      = "thehive-igw"
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_subnet" "thehive_public" {
+  vpc_id            = aws_vpc.thehive.id
+  cidr_block        = var.thehive_public_subnet_cidr
+  availability_zone = "ap-northeast-2d"
+
+  tags = {
+    Name      = "thehive-public-subnet"
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_subnet" "thehive_private" {
+  vpc_id            = aws_vpc.thehive.id
+  cidr_block        = var.thehive_private_subnet_cidr
+  availability_zone = "ap-northeast-2d"
+
+  tags = {
+    Name      = "thehive-private-subnet"
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_route_table" "thehive_public" {
+  vpc_id = aws_vpc.thehive.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.thehive.id
+  }
+
+  tags = {
+    Name      = "thehive-public-rtb"
+    ManagedBy = "terraform"
+  }
+}
+
+resource "aws_route_table_association" "thehive_public" {
+  subnet_id      = aws_subnet.thehive_public.id
+  route_table_id = aws_route_table.thehive_public.id
 }

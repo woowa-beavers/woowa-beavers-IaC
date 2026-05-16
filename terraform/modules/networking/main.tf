@@ -220,6 +220,32 @@ resource "aws_security_group" "rds_sg" {
 }
 
 # ==========================================
+# EC2 Key Pair (Bastion + NAT 공용)
+# ==========================================
+resource "aws_key_pair" "bastion_nat" {
+  key_name   = var.bastion_key_name
+  public_key = var.bastion_nat_public_key
+
+  tags = {
+    Name = var.bastion_key_name
+  }
+}
+
+# ==========================================
+# VPC Flow Logs → S3
+# ==========================================
+resource "aws_flow_log" "vpc" {
+  log_destination      = var.vpc_flow_logs_bucket_arn
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.main.id
+
+  tags = {
+    Name = "woowa-beavers-vpc-flow-logs"
+  }
+}
+
+# ==========================================
 # Bastion Host
 # ==========================================
 resource "aws_security_group" "bastion_sg" {

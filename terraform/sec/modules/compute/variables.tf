@@ -8,17 +8,17 @@ variable "ec2_ami" {
 }
 
 variable "thehive_vpc_id" {
-  description = "TheHive VPC ID"
+  description = "TheHive VPC ID (networking 모듈 output)"
   type        = string
 }
 
 variable "thehive_public_subnet_id" {
-  description = "TheHive NAT 인스턴스용 퍼블릭 서브넷 ID"
+  description = "TheHive NAT 인스턴스용 퍼블릭 서브넷 ID (networking 모듈 output)"
   type        = string
 }
 
 variable "thehive_private_subnet_id" {
-  description = "TheHive 서버용 프라이빗 서브넷 ID"
+  description = "TheHive 서버용 프라이빗 서브넷 ID (networking 모듈 output)"
   type        = string
 }
 
@@ -27,13 +27,13 @@ variable "thehive_admin_cidr" {
   type        = string
 }
 
-variable "thehive_nat_eip_alloc_id" {
-  description = "NAT 인스턴스에 연결할 EIP Allocation ID"
+variable "thehive_instance_profile_name" {
+  description = "TheHive EC2 IAM Instance Profile 이름"
   type        = string
 }
 
-variable "thehive_instance_profile_name" {
-  description = "TheHive EC2 IAM Instance Profile 이름"
+variable "thehive_public_key" {
+  description = "TheHive 서버 EC2 Key Pair 공개키 (ssh-rsa ...)"
   type        = string
 }
 
@@ -46,16 +46,21 @@ variable "misp_ami" {
 }
 
 variable "misp_vpc_id" {
-  description = "MISP VPC ID"
+  description = "MISP VPC ID (networking 모듈 output)"
   type        = string
 }
 
 variable "misp_private_subnet_id" {
-  description = "MISP 서버용 프라이빗 서브넷 ID"
+  description = "MISP 서버용 프라이빗 서브넷 ID (networking 모듈 output)"
   type        = string
 }
 
 variable "misp_instance_profile_name" {
   description = "MISP EC2 IAM Instance Profile 이름"
+  type        = string
+}
+
+variable "misp_public_key" {
+  description = "MISP 서버 EC2 Key Pair 공개키 (ssh-rsa ...)"
   type        = string
 }

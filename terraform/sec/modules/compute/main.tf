@@ -1,6 +1,23 @@
 # terraform/sec/modules/compute/main.tf
-# 역할: sec 계정 컴퓨트 모듈 - 보안그룹·TheHive NAT 인스턴스·서버·MISP 서버 EC2 생성 및 라우팅 구성
-# 흐름: variables.tf 입력값 → 보안그룹 생성 → NAT Instance → Route Table → TheHive 서버 → EIP 연결 → MISP 서버
+# 역할: sec 계정 컴퓨트 모듈 - Key Pairs·보안그룹·TheHive NAT·서버·MISP 서버 EC2 생성
+# 흐름: variables.tf 입력값 → Key Pair → 보안그룹 → NAT Instance → EIP → TheHive 서버 → MISP 서버
+
+# ==========================================
+# Key Pairs
+# ==========================================
+resource "aws_key_pair" "thehive" {
+  key_name   = "theHive-server-ec2"
+  public_key = var.thehive_public_key
+
+  tags = { Name = "theHive-server-ec2" }
+}
+
+resource "aws_key_pair" "misp" {
+  key_name   = "misp-ec2-server"
+  public_key = var.misp_public_key
+
+  tags = { Name = "misp-ec2-server" }
+}
 
 # ==========================================
 # TheHive NAT Instance Security Group
@@ -125,6 +142,20 @@ resource "aws_instance" "thehive_nat" {
 }
 
 # ==========================================
+# TheHive NAT Instance EIP
+# ==========================================
+resource "aws_eip" "thehive_nat" {
+  domain = "vpc"
+
+  tags = { Name = "thehive-nat-eip" }
+}
+
+resource "aws_eip_association" "thehive_nat" {
+  instance_id   = aws_instance.thehive_nat.id
+  allocation_id = aws_eip.thehive_nat.id
+}
+
+# ==========================================
 # TheHive Private Route Table
 # ==========================================
 resource "aws_route_table" "thehive_private" {
@@ -151,7 +182,7 @@ resource "aws_instance" "thehive" {
   instance_type     = "t3.large"
   subnet_id         = var.thehive_private_subnet_id
   availability_zone = "ap-northeast-2d"
-  key_name          = "theHive-server-ec2"
+  key_name          = aws_key_pair.thehive.key_name
 
   vpc_security_group_ids = [aws_security_group.thehive.id]
   iam_instance_profile   = var.thehive_instance_profile_name
@@ -166,18 +197,6 @@ resource "aws_instance" "thehive" {
 }
 
 # ==========================================
-# NAT Instance EIP
-# ==========================================
-data "aws_eip" "thehive_nat" {
-  id = var.thehive_nat_eip_alloc_id
-}
-
-resource "aws_eip_association" "thehive_nat" {
-  instance_id   = aws_instance.thehive_nat.id
-  allocation_id = data.aws_eip.thehive_nat.id
-}
-
-# ==========================================
 # MISP Server
 # ==========================================
 resource "aws_instance" "misp" {
@@ -185,7 +204,7 @@ resource "aws_instance" "misp" {
   instance_type     = "t3a.medium"
   subnet_id         = var.misp_private_subnet_id
   availability_zone = "ap-northeast-2a"
-  key_name          = "misp-ec2-server"
+  key_name          = aws_key_pair.misp.key_name
 
   vpc_security_group_ids = [aws_security_group.misp.id]
   iam_instance_profile   = var.misp_instance_profile_name

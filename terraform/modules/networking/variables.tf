@@ -41,6 +41,17 @@ variable "db_subnet_2_cidr" {
   default     = "10.0.4.0/24"
 }
 
+variable "bastion_nat_public_key" {
+  description = "Bastion + NAT EC2 Key Pair 공개키 (ssh-rsa ...)"
+  type        = string
+}
+
+variable "vpc_flow_logs_bucket_arn" {
+  description = "VPC Flow Logs S3 버킷 ARN"
+  type        = string
+  default     = "arn:aws:s3:::woowabeavers-vpc-flow-logs-apnortheast2"
+}
+
 variable "cloudflare_cidrs" {
   description = "Cloudflare IPv4 CIDR 목록 — Bastion SSH 허용 대상 (https://www.cloudflare.com/ips/)"
   type        = list(string)

@@ -2,6 +2,11 @@
 # 역할: compute 모듈 입력 변수 선언 (EC2 인스턴스 설정값)
 # 흐름: environments/dev/main.tf 에서 전달 → 변수 검증 → main.tf 에서 참조
 
+variable "ec2_public_key" {
+  description = "EC2 1~5 공용 Key Pair 공개키 (ssh-rsa ...)"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "VPC ID"
   type        = string

@@ -26,9 +26,10 @@ provider "aws" {
 module "networking" {
   source = "../../modules/networking"
 
-  bastion_ami_id     = var.bastion_ami_id
-  bastion_key_name   = var.bastion_key_name
-  bastion_private_ip = var.bastion_private_ip
+  bastion_ami_id         = var.bastion_ami_id
+  bastion_key_name       = var.bastion_key_name
+  bastion_private_ip     = var.bastion_private_ip
+  bastion_nat_public_key = var.bastion_nat_public_key
 
   nat_ami_id     = var.nat_ami_id
   nat_key_name   = var.nat_key_name
@@ -38,6 +39,7 @@ module "networking" {
 module "compute" {
   source = "../../modules/compute"
 
+  ec2_public_key    = var.ec2_public_key
   vpc_id            = module.networking.vpc_id
   private_subnet_id = module.networking.private_subnet_id
   bastion_sg_id     = module.networking.bastion_sg_id

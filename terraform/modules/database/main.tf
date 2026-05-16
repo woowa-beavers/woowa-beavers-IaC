@@ -16,6 +16,18 @@ resource "aws_db_subnet_group" "rds" {
 }
 
 # -----------------------------------------------
+# Auth RDS Parameter Group
+# -----------------------------------------------
+resource "aws_db_parameter_group" "auth" {
+  name   = "auth-rds"
+  family = "mysql8.4"
+
+  tags = {
+    Name = "auth-rds"
+  }
+}
+
+# -----------------------------------------------
 # Auth RDS (MySQL 8.4)
 # -----------------------------------------------
 resource "aws_db_instance" "auth" {
@@ -37,7 +49,7 @@ resource "aws_db_instance" "auth" {
   max_allocated_storage = 1000
   storage_encrypted     = true
 
-  parameter_group_name = "auth-rds"
+  parameter_group_name = aws_db_parameter_group.auth.name
 
   backup_retention_period = 1
 
