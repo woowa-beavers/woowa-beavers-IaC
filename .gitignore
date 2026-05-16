@@ -16,3 +16,4 @@ override.tf.json
 *.tfvars
 !*.tfvars.example
 .env
+set_secrets.sh
