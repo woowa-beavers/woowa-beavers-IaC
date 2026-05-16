@@ -48,7 +48,9 @@ ec2_5_private_ip = "10.0.2.xxx"
 # commerce_db_password = ""  # GitHub Secrets: TF_VAR_COMMERCE_DB_PASSWORD
 
 # ALB
-certificate_arn = "arn:aws:acm:ap-northeast-2:xxxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+certificate_arn            = "arn:aws:acm:ap-northeast-2:xxxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+cloudfront_certificate_arn = "arn:aws:acm:us-east-1:xxxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+waf_web_acl_arn            = "arn:aws:wafv2:us-east-1:xxxxxxxxxxxx:global/webacl/CreatedByCloudFront-xxxxxxxx/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 # CloudFront
 # x_origin_secret = ""  # GitHub Secrets: TF_VAR_X_ORIGIN_SECRET

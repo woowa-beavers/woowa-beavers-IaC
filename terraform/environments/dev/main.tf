@@ -81,7 +81,9 @@ module "cdn" {
   vpc_id            = module.networking.vpc_id
   public_subnet_ids = module.networking.public_subnet_ids
   alb_sg_id         = module.networking.alb_sg_id
-  certificate_arn   = var.certificate_arn
+  certificate_arn            = var.certificate_arn
+  cloudfront_certificate_arn = var.cloudfront_certificate_arn
+  waf_web_acl_arn            = var.waf_web_acl_arn
 
   ec2_1_instance_id = module.compute.ec2_1_instance_id
   ec2_2_instance_id = module.compute.ec2_2_instance_id

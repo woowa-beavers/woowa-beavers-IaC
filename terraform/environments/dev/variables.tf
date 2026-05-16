@@ -177,7 +177,17 @@ variable "commerce_db_password" {
 # CDN 모듈 - ALB
 # -----------------------------------------------
 variable "certificate_arn" {
-  description = "ACM certificate ARN for HTTPS listener"
+  description = "ACM certificate ARN for ALB HTTPS listener (ap-northeast-2)"
+  type        = string
+}
+
+variable "cloudfront_certificate_arn" {
+  description = "ACM certificate ARN for CloudFront (us-east-1 필수)"
+  type        = string
+}
+
+variable "waf_web_acl_arn" {
+  description = "CloudFront WAF Web ACL ARN (us-east-1 global)"
   type        = string
 }
 

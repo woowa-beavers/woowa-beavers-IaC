@@ -284,3 +284,115 @@ resource "aws_lb_listener_rule" "https_product" {
     }
   }
 }
+
+# -----------------------------------------------
+# CloudFront — Origin Access Control (S3용)
+# -----------------------------------------------
+resource "aws_cloudfront_origin_access_control" "s3" {
+  name                              = "woowa-beavers-shop-static-oac"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
+# -----------------------------------------------
+# CloudFront Distribution
+# -----------------------------------------------
+resource "aws_cloudfront_distribution" "main" {
+  enabled         = true
+  aliases         = ["*.woowabeavers.cloud"]
+  price_class     = "PriceClass_All"
+  web_acl_id      = var.waf_web_acl_arn
+  http_version    = "http2"
+  is_ipv6_enabled = true
+
+  # Origin 1: ALB (동적 요청)
+  origin {
+    domain_name = aws_lb.main.dns_name
+    origin_id   = "alb-origin"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+
+    custom_header {
+      name  = "X-Origin-Secret"
+      value = var.x_origin_secret
+    }
+  }
+
+  # Origin 2: S3 (정적 파일)
+  origin {
+    domain_name              = "${var.shop_static_bucket_name}.s3.ap-northeast-2.amazonaws.com"
+    origin_id                = "s3-static-origin"
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
+  }
+
+  # 동작 0: /static/* → S3 (캐싱 최적화)
+  ordered_cache_behavior {
+    path_pattern           = "/static/*"
+    target_origin_id       = "s3-static-origin"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+
+    cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
+  }
+
+  # 동작 기본: * → ALB (캐싱 비활성화, 모든 헤더 전달)
+  default_cache_behavior {
+    target_origin_id       = "alb-origin"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
+
+    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingDisabled
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Managed-AllViewer
+  }
+
+  viewer_certificate {
+    acm_certificate_arn      = var.cloudfront_certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  tags = {
+    Name = "woowa-beavers-shop-cloudfront"
+  }
+}
+
+# -----------------------------------------------
+# S3 버킷 정책 — CloudFront OAC 접근 허용
+# -----------------------------------------------
+resource "aws_s3_bucket_policy" "shop_static_cloudfront" {
+  bucket = var.shop_static_bucket_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontServicePrincipal"
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action   = "s3:GetObject"
+        Resource = "arn:aws:s3:::${var.shop_static_bucket_name}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.main.arn
+          }
+        }
+      }
+    ]
+  })
+}

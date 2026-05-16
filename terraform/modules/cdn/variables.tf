@@ -52,3 +52,19 @@ variable "x_origin_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "cloudfront_certificate_arn" {
+  description = "CloudFront용 ACM 인증서 ARN (us-east-1 리전 필수)"
+  type        = string
+}
+
+variable "waf_web_acl_arn" {
+  description = "CloudFront에 연결할 WAF Web ACL ARN (us-east-1 global)"
+  type        = string
+}
+
+variable "shop_static_bucket_name" {
+  description = "정적 파일 S3 버킷 이름 — CloudFront S3 origin 및 OAC 정책용"
+  type        = string
+  default     = "woowa-beavers-shop-static-529646247193-ap-northeast-2-an"
+}
