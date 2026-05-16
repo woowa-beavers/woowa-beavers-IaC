@@ -4,14 +4,6 @@
 
 aws_region = "ap-northeast-2"
 
-# 공통 네트워크
-vpc_id              = "vpc-xxxxxxxxxxxxxxxxx"
-public_subnet_id    = "subnet-xxxxxxxxxxxxxxxxx"
-public_subnet_ids   = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-xxxxxxxxxxxxxxxxx"]
-private_subnet_id   = "subnet-xxxxxxxxxxxxxxxxx"
-private_subnet_cidr = "10.0.2.0/24"
-alb_sg_id           = "sg-xxxxxxxxxxxxxxxxx"
-
 # Bastion
 bastion_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 bastion_key_name   = "woowa-beavers-bastion-EC2-key"
@@ -42,16 +34,17 @@ ec2_4_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_4_key_name   = "woowa-beavers-keypair"
 ec2_4_private_ip = "10.0.2.xxx"
 
-# EC2-5 Red Team 랩 (Credential Discovery)
+# EC2-5 Red Team
 ec2_5_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_5_key_name   = "woowa-beavers-keypair"
-ec2_5_private_ip = "10.0.2.202"
+ec2_5_private_ip = "10.0.2.xxx"
 
 # RDS
-db_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-xxxxxxxxxxxxxxxxx"]
-rds_sg_id     = "sg-xxxxxxxxxxxxxxxxx"
 # auth_db_password     = ""  # GitHub Secrets: TF_VAR_AUTH_DB_PASSWORD
 # commerce_db_password = ""  # GitHub Secrets: TF_VAR_COMMERCE_DB_PASSWORD
 
 # ALB
 certificate_arn = "arn:aws:acm:ap-northeast-2:xxxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+# CloudFront
+# x_origin_secret = ""  # GitHub Secrets: TF_VAR_X_ORIGIN_SECRET

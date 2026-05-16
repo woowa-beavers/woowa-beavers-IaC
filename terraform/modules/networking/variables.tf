@@ -1,21 +1,44 @@
 # terraform/modules/networking/variables.tf
-# 역할: networking 모듈 입력 변수 선언 (Bastion · NAT 인스턴스 설정값)
+# 역할: networking 모듈 입력 변수 선언 (VPC CIDR · 서브넷 CIDR · Bastion · NAT 설정값)
 # 흐름: environments/dev/main.tf 에서 전달 → 변수 검증 → main.tf 에서 참조
 
-variable "vpc_id" {
-  description = "VPC ID"
+# -----------------------------------------------
+# VPC / 서브넷 CIDR
+# -----------------------------------------------
+variable "vpc_cidr" {
+  description = "VPC CIDR block"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
-variable "public_subnet_id" {
-  description = "Public subnet ID for bastion and NAT instance"
+variable "public_subnet_1_cidr" {
+  description = "Public subnet 1 CIDR (ap-northeast-2a) - Bastion, NAT"
   type        = string
+  default     = "10.0.1.0/24"
 }
 
-variable "private_subnet_cidrs" {
-  description = "Private subnet CIDR blocks (private1 + private2 모두 포함)"
-  type        = list(string)
-  default     = ["10.0.2.0/24", "10.0.3.0/24"]
+variable "public_subnet_2_cidr" {
+  description = "Public subnet 2 CIDR (ap-northeast-2c) - ALB second AZ"
+  type        = string
+  default     = "10.0.5.0/24"
+}
+
+variable "private_subnet_cidr" {
+  description = "Private subnet CIDR (ap-northeast-2a) - EC2 instances"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
+variable "db_subnet_1_cidr" {
+  description = "DB subnet 1 CIDR (ap-northeast-2a)"
+  type        = string
+  default     = "10.0.3.0/24"
+}
+
+variable "db_subnet_2_cidr" {
+  description = "DB subnet 2 CIDR (ap-northeast-2c)"
+  type        = string
+  default     = "10.0.4.0/24"
 }
 
 variable "cloudflare_cidrs" {
@@ -83,5 +106,5 @@ variable "nat_key_name" {
 variable "nat_private_ip" {
   description = "NAT instance private IP"
   type        = string
-  default     = "10.0.1.171"
+  default     = "10.0.1.10"
 }
