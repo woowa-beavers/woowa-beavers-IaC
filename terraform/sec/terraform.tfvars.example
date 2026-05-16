@@ -8,16 +8,15 @@ misp_public_subnet_name  = "soc-misp-public-subnet"
 misp_private_subnet_name = "soc-misp-private-subnet"
 
 # Compute (TheHive)
-ec2_ami                    = "ami-xxxxxxxxxxxxxxxxx"
-thehive_vpc_id             = "vpc-xxxxxxxxxxxxxxxxx"
-thehive_public_subnet_id   = "subnet-xxxxxxxxxxxxxxxxx"
-thehive_private_subnet_id  = "subnet-xxxxxxxxxxxxxxxxx"
-nat_security_group_ids     = ["sg-xxxxxxxxxxxxxxxxx"]
-thehive_security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
-thehive_nat_eip_alloc_id   = "eipalloc-xxxxxxxxxxxxxxxxx"
+ec2_ami                   = "ami-xxxxxxxxxxxxxxxxx"
+thehive_vpc_id            = "vpc-xxxxxxxxxxxxxxxxx"
+thehive_public_subnet_id  = "subnet-xxxxxxxxxxxxxxxxx"
+thehive_private_subnet_id = "subnet-xxxxxxxxxxxxxxxxx"
+thehive_admin_cidr        = "x.x.x.x/32"
+thehive_nat_eip_alloc_id  = "eipalloc-xxxxxxxxxxxxxxxxx"
+
+# Compute (MISP)
+misp_ami = "ami-xxxxxxxxxxxxxxxxx"
 
 # Security
-sec_account_id = "126378327873"
-
-# S3 버킷
-wazuh_reader_iam_arn   = "arn:aws:iam::xxxxxxxxxxxxxxxxx:role/wazuh-reader"
+sec_account_id = "xxxxxxxxxxxx"

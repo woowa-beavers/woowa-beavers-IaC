@@ -22,6 +22,26 @@ variable "ec2_1_instance_id" {
   type        = string
 }
 
+variable "ec2_2_instance_id" {
+  description = "EC2-2 instance ID - attached to target group"
+  type        = string
+}
+
+variable "ec2_3_instance_id" {
+  description = "EC2-3 instance ID - attached to target group"
+  type        = string
+}
+
+variable "ec2_4_instance_id" {
+  description = "EC2-4 instance ID - attached to target group"
+  type        = string
+}
+
+variable "ec2_5_instance_id" {
+  description = "EC2-5 instance ID - attached to target group"
+  type        = string
+}
+
 variable "certificate_arn" {
   description = "ACM certificate ARN for HTTPS listener"
   type        = string

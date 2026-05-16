@@ -13,15 +13,21 @@ on:
         default: plan
         required: true
       directory:
-        description: "대상 디렉토리 (예: terraform/dev/bastion)"
-        type: string
+        description: "대상 디렉토리"
+        type: choice
+        options:
+          - terraform/environments/dev
+          - terraform/sec
+          - terraform/cloudflare
+          - terraform/ops
+          - terraform/root
         required: true
 
 env:
   AWS_DEFAULT_REGION: ap-northeast-2
 
 jobs:
-  # PR 시: 모든 모듈 validate
+  # PR 시: 모든 모듈 validate + format check
   validate:
     if: github.event_name == 'pull_request'
     name: Validate (${{ matrix.directory }})
@@ -60,28 +66,101 @@ jobs:
     defaults:
       run:
         working-directory: ${{ inputs.directory }}
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_VAR_vpc_id: ${{ secrets.TF_VAR_VPC_ID }}
-      TF_VAR_public_subnet_id: ${{ secrets.TF_VAR_PUBLIC_SUBNET_ID }}
-      TF_VAR_public_subnet_ids: ${{ secrets.TF_VAR_PUBLIC_SUBNET_IDS }}
-      TF_VAR_private_subnet_id: ${{ secrets.TF_VAR_PRIVATE_SUBNET_ID }}
-      TF_VAR_private_subnet_cidr: ${{ secrets.TF_VAR_PRIVATE_SUBNET_CIDR }}
-      TF_VAR_ami_id: ${{ secrets.TF_VAR_AMI_ID }}
-      TF_VAR_key_name: ${{ secrets.TF_VAR_KEY_NAME }}
-      TF_VAR_bastion_sg_id: ${{ secrets.TF_VAR_BASTION_SG_ID }}
-      TF_VAR_alb_sg_id: ${{ secrets.TF_VAR_ALB_SG_ID }}
-      TF_VAR_ec2_1_instance_id: ${{ secrets.TF_VAR_EC2_1_INSTANCE_ID }}
-      TF_VAR_certificate_arn: ${{ secrets.TF_VAR_CERTIFICATE_ARN }}
-      TF_VAR_auth_db_password: ${{ secrets.TF_VAR_AUTH_DB_PASSWORD }}
-      TF_VAR_commerce_db_password: ${{ secrets.TF_VAR_COMMERCE_DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.15.3"
+
+      # ==========================================
+      # dev 계정 (529646247193)
+      # ==========================================
+      - name: Set credentials — dev
+        if: inputs.directory == 'terraform/environments/dev'
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.DEV_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "TF_VAR_vpc_id=${{ secrets.DEV_VPC_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_public_subnet_id=${{ secrets.DEV_PUBLIC_SUBNET_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_public_subnet_ids=${{ secrets.DEV_PUBLIC_SUBNET_IDS }}" >> $GITHUB_ENV
+          echo "TF_VAR_private_subnet_id=${{ secrets.DEV_PRIVATE_SUBNET_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_alb_sg_id=${{ secrets.DEV_ALB_SG_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_bastion_ami_id=${{ secrets.DEV_BASTION_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_bastion_key_name=${{ secrets.DEV_BASTION_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_nat_ami_id=${{ secrets.DEV_NAT_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_nat_key_name=${{ secrets.DEV_NAT_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_1_ami_id=${{ secrets.DEV_EC2_1_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_1_key_name=${{ secrets.DEV_EC2_1_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_2_ami_id=${{ secrets.DEV_EC2_2_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_2_key_name=${{ secrets.DEV_EC2_2_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_3_ami_id=${{ secrets.DEV_EC2_3_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_3_key_name=${{ secrets.DEV_EC2_3_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_4_ami_id=${{ secrets.DEV_EC2_4_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_4_key_name=${{ secrets.DEV_EC2_4_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_5_ami_id=${{ secrets.DEV_EC2_5_AMI_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_db_subnet_ids=${{ secrets.DEV_DB_SUBNET_IDS }}" >> $GITHUB_ENV
+          echo "TF_VAR_rds_sg_id=${{ secrets.DEV_RDS_SG_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_certificate_arn=${{ secrets.DEV_CERTIFICATE_ARN }}" >> $GITHUB_ENV
+          echo "TF_VAR_auth_db_password=${{ secrets.DEV_AUTH_DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "TF_VAR_commerce_db_password=${{ secrets.DEV_COMMERCE_DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "TF_VAR_x_origin_secret=${{ secrets.DEV_X_ORIGIN_SECRET }}" >> $GITHUB_ENV
+
+      # ==========================================
+      # sec 계정 (126378327873)
+      # ==========================================
+      - name: Set credentials — sec
+        if: inputs.directory == 'terraform/sec'
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.SEC_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.SEC_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_ami=${{ secrets.SEC_EC2_AMI }}" >> $GITHUB_ENV
+          echo "TF_VAR_misp_ami=${{ secrets.SEC_MISP_AMI }}" >> $GITHUB_ENV
+          echo "TF_VAR_thehive_vpc_id=${{ secrets.SEC_THEHIVE_VPC_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_thehive_public_subnet_id=${{ secrets.SEC_THEHIVE_PUBLIC_SUBNET_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_thehive_private_subnet_id=${{ secrets.SEC_THEHIVE_PRIVATE_SUBNET_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_thehive_admin_cidr=${{ secrets.SEC_THEHIVE_ADMIN_CIDR }}" >> $GITHUB_ENV
+          echo "TF_VAR_thehive_nat_eip_alloc_id=${{ secrets.SEC_THEHIVE_NAT_EIP_ALLOC_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_sec_account_id=${{ secrets.SEC_ACCOUNT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_misp_vpc_name=soc-misp-vpc" >> $GITHUB_ENV
+          echo "TF_VAR_misp_public_subnet_name=soc-misp-public-subnet" >> $GITHUB_ENV
+          echo "TF_VAR_misp_private_subnet_name=soc-misp-private-subnet" >> $GITHUB_ENV
+
+      # ==========================================
+      # cloudflare (ops 계정 S3 백엔드 접근)
+      # ==========================================
+      - name: Set credentials — cloudflare
+        if: inputs.directory == 'terraform/cloudflare'
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.OPS_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.OPS_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "TF_VAR_cloudflare_api_token=${{ secrets.CLOUDFLARE_API_TOKEN }}" >> $GITHUB_ENV
+          echo "TF_VAR_cloudflare_zone_id=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_tunnel_id_bastion=${{ secrets.TUNNEL_ID_BASTION }}" >> $GITHUB_ENV
+          echo "TF_VAR_tunnel_id_thehive=${{ secrets.TUNNEL_ID_THEHIVE }}" >> $GITHUB_ENV
+          echo "TF_VAR_tunnel_id_misp=${{ secrets.TUNNEL_ID_MISP }}" >> $GITHUB_ENV
+          echo "TF_VAR_tunnel_id_n8n=${{ secrets.TUNNEL_ID_N8N }}" >> $GITHUB_ENV
+          echo "TF_VAR_tunnel_id_velociraptor=${{ secrets.TUNNEL_ID_VELOCIRAPTOR }}" >> $GITHUB_ENV
+          echo "TF_VAR_tunnel_id_wazuh=${{ secrets.TUNNEL_ID_WAZUH }}" >> $GITHUB_ENV
+          echo "TF_VAR_shop_cname_target=${{ secrets.SHOP_CNAME_TARGET }}" >> $GITHUB_ENV
+
+      # ==========================================
+      # ops 계정 (263842074185)
+      # ==========================================
+      - name: Set credentials — ops
+        if: inputs.directory == 'terraform/ops'
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.OPS_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.OPS_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+      # ==========================================
+      # root 계정 (362437996006)
+      # ==========================================
+      - name: Set credentials — root
+        if: inputs.directory == 'terraform/root'
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.ROOT_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.ROOT_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
 
       - name: Terraform Init
         run: terraform init

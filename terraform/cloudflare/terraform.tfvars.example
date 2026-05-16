@@ -3,14 +3,13 @@
 # 흐름: 예시 값 확인 → terraform.tfvars 생성 → terraform apply 시 variables.tf 로 주입
 
 cloudflare_api_token = "your-cloudflare-api-token"
-cloudflare_zone_id   = "86dbc892d1fad84f5502f124b371daf4"
+cloudflare_zone_id   = "your-cloudflare-zone-id"
 
-tunnel_id_bastion       = "7088a279-1629-4098-a2c8-cfabae63d6fb"
-tunnel_id_thehive       = "194b032c-5e0d-451f-9b50-e59e005a4321"
-tunnel_id_fix_inventory = "343aa50b-bafb-4ed2-9926-bc936b0e8887"
-tunnel_id_misp          = "bf188e95-cd97-439e-8fe6-bd08cb85e4a0"
-tunnel_id_n8n           = "fdd05303-6c74-480c-bbcf-1f55286b9f43"
-tunnel_id_velociraptor  = "4c20b0d4-0e85-48bf-a030-746e5daedb7c"
-tunnel_id_wazuh         = "e37b8a2c-9266-410b-9e79-4f2309a31845"
+tunnel_id_bastion       = "your-bastion-tunnel-id"
+tunnel_id_thehive       = "your-thehive-tunnel-id"
+tunnel_id_misp          = "your-misp-tunnel-id"
+tunnel_id_n8n           = "your-n8n-tunnel-id"
+tunnel_id_velociraptor  = "your-velociraptor-tunnel-id"
+tunnel_id_wazuh         = "your-wazuh-tunnel-id"
 
-shop_cname_target = "drj4281onjmn3.cloudfront.net"
+shop_cname_target = "your-cloudfront-domain.cloudfront.net"

@@ -77,7 +77,7 @@ variable "nat_key_name" {
 variable "nat_private_ip" {
   description = "NAT instance private IP"
   type        = string
-  default     = "10.0.1.171"
+  default     = "10.0.1.10"
 }
 
 # -----------------------------------------------

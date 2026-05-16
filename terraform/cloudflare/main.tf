@@ -11,6 +11,12 @@ terraform {
       version = "~> 4.0"
     }
   }
+
+  backend "s3" {
+    bucket = "woowa-beavers-tfstate"
+    key    = "cloudflare/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
 }
 
 provider "cloudflare" {
@@ -33,15 +39,6 @@ resource "cloudflare_record" "cortex" {
   zone_id = var.cloudflare_zone_id
   name    = "cortex"
   content = "${var.tunnel_id_thehive}.cfargotunnel.com"
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1
-}
-
-resource "cloudflare_record" "fix_inventory" {
-  zone_id = var.cloudflare_zone_id
-  name    = "fix-inventory"
-  content = "${var.tunnel_id_fix_inventory}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
   ttl     = 1

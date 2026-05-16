@@ -26,11 +26,6 @@ variable "tunnel_id_thehive" {
   type        = string
 }
 
-variable "tunnel_id_fix_inventory" {
-  description = "fix-inventory 터널 ID"
-  type        = string
-}
-
 variable "tunnel_id_misp" {
   description = "misp 터널 ID"
   type        = string

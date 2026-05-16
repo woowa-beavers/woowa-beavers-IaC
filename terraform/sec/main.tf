@@ -11,6 +11,12 @@ terraform {
       version = "~> 6.44"
     }
   }
+
+  backend "s3" {
+    bucket = "woowa-beavers-tfstate"
+    key    = "sec/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
 }
 
 provider "aws" {
@@ -37,7 +43,7 @@ module "iam" {
 }
 
 # ==========================================
-# 3. Compute (TheHive NAT Instance / Server)
+# 3. Compute (TheHive NAT Instance / Server / MISP Server)
 # ==========================================
 module "compute" {
   source = "./modules/compute"
@@ -46,10 +52,14 @@ module "compute" {
   thehive_vpc_id                = var.thehive_vpc_id
   thehive_public_subnet_id      = var.thehive_public_subnet_id
   thehive_private_subnet_id     = var.thehive_private_subnet_id
-  nat_security_group_ids        = var.nat_security_group_ids
-  thehive_security_group_ids    = var.thehive_security_group_ids
+  thehive_admin_cidr            = var.thehive_admin_cidr
   thehive_nat_eip_alloc_id      = var.thehive_nat_eip_alloc_id
   thehive_instance_profile_name = module.iam.thehive_instance_profile_name
+
+  misp_ami                   = var.misp_ami
+  misp_vpc_id                = module.networking.misp_vpc_id
+  misp_private_subnet_id     = module.networking.misp_private_subnet_id
+  misp_instance_profile_name = module.iam.misp_instance_profile_name
 }
 
 # ==========================================
@@ -84,13 +94,6 @@ module "central_cloudtrail" {
         Action    = "s3:PutObject"
         Resource  = "arn:aws:s3:::${var.cloudtrail_bucket_name}/AWSLogs/*"
         Condition = { StringEquals = { "s3:x-amz-acl" = "bucket-owner-full-control" } }
-      },
-      {
-        Sid       = "WazuhReadAccess"
-        Effect    = "Allow"
-        Principal = { AWS = var.wazuh_reader_iam_arn }
-        Action    = ["s3:GetObject", "s3:ListBucket"]
-        Resource  = ["arn:aws:s3:::${var.cloudtrail_bucket_name}", "arn:aws:s3:::${var.cloudtrail_bucket_name}/*"]
       }
     ]
   })

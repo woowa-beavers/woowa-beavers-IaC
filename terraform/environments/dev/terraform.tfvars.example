@@ -15,12 +15,12 @@ alb_sg_id           = "sg-xxxxxxxxxxxxxxxxx"
 # Bastion
 bastion_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 bastion_key_name   = "woowa-beavers-bastion-EC2-key"
-bastion_private_ip = "10.0.1.143"
+bastion_private_ip = "10.0.1.xxx"
 
 # NAT
 nat_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 nat_key_name   = "woowa-beavers-bastion-EC2-key"
-nat_private_ip = "10.0.1.171"
+nat_private_ip = "10.0.1.xxx"
 
 # EC2-1 Product
 ec2_1_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
@@ -30,21 +30,26 @@ ec2_1_private_ip = "10.0.2.xxx"
 # EC2-2 Auth
 ec2_2_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_2_key_name   = "woowa-beavers-keypair"
-ec2_2_private_ip = "10.0.2.233"
+ec2_2_private_ip = "10.0.2.xxx"
 
 # EC2-3 Inventory
 ec2_3_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_3_key_name   = "woowa-beavers-keypair"
-ec2_3_private_ip = "10.0.2.33"
+ec2_3_private_ip = "10.0.2.xxx"
 
 # EC2-4 Order
 ec2_4_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
 ec2_4_key_name   = "woowa-beavers-keypair"
-ec2_4_private_ip = "10.0.2.74"
+ec2_4_private_ip = "10.0.2.xxx"
+
+# EC2-5 Red Team 랩 (Credential Discovery)
+ec2_5_ami_id     = "ami-xxxxxxxxxxxxxxxxx"
+ec2_5_key_name   = "woowa-beavers-keypair"
+ec2_5_private_ip = "10.0.2.202"
 
 # RDS
-db_subnet_ids = ["subnet-0d8c0ff181c25bd4a", "subnet-0f2dfaf7ddafbab63"]
-rds_sg_id     = "sg-02cdc3adb97677ca2"
+db_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-xxxxxxxxxxxxxxxxx"]
+rds_sg_id     = "sg-xxxxxxxxxxxxxxxxx"
 # auth_db_password     = ""  # GitHub Secrets: TF_VAR_AUTH_DB_PASSWORD
 # commerce_db_password = ""  # GitHub Secrets: TF_VAR_COMMERCE_DB_PASSWORD
 

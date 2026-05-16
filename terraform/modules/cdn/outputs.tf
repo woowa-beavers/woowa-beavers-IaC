@@ -24,20 +24,20 @@ output "target_group_ec2_1_arn" {
 
 output "target_group_ec2_2_arn" {
   description = "EC2-2 target group ARN (auth)"
-  value       = data.aws_lb_target_group.ec2_2.arn
+  value       = aws_lb_target_group.ec2_2.arn
 }
 
 output "target_group_ec2_3_arn" {
   description = "EC2-3 target group ARN (inventory)"
-  value       = data.aws_lb_target_group.ec2_3.arn
+  value       = aws_lb_target_group.ec2_3.arn
 }
 
 output "target_group_ec2_4_arn" {
   description = "EC2-4 target group ARN (order)"
-  value       = data.aws_lb_target_group.ec2_4.arn
+  value       = aws_lb_target_group.ec2_4.arn
 }
 
 output "target_group_ec2_5_arn" {
   description = "EC2-5 target group ARN"
-  value       = data.aws_lb_target_group.ec2_5.arn
+  value       = aws_lb_target_group.ec2_5.arn
 }

@@ -11,6 +11,12 @@ terraform {
       version = "~> 6.44"
     }
   }
+
+  backend "s3" {
+    bucket = "woowa-beavers-tfstate"
+    key    = "root/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
 }
 
 provider "aws" {

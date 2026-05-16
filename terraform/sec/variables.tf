@@ -36,7 +36,7 @@ variable "misp_project_name" {
 # Compute (TheHive)
 # ==========================================
 variable "ec2_ami" {
-  description = "EC2 AMI ID"
+  description = "TheHive EC2 AMI ID (Ubuntu 24.04)"
   type        = string
 }
 
@@ -55,18 +55,21 @@ variable "thehive_private_subnet_id" {
   type        = string
 }
 
-variable "nat_security_group_ids" {
-  description = "NAT 인스턴스 보안그룹 ID 목록"
-  type        = list(string)
-}
-
-variable "thehive_security_group_ids" {
-  description = "TheHive 서버 보안그룹 ID 목록"
-  type        = list(string)
+variable "thehive_admin_cidr" {
+  description = "TheHive API 접근 허용 관리자 IP CIDR (예: 211.215.118.93/32)"
+  type        = string
 }
 
 variable "thehive_nat_eip_alloc_id" {
   description = "NAT 인스턴스에 연결할 EIP Allocation ID"
+  type        = string
+}
+
+# ==========================================
+# Compute (MISP)
+# ==========================================
+variable "misp_ami" {
+  description = "MISP EC2 AMI ID (Ubuntu 24.04)"
   type        = string
 }
 
@@ -99,7 +102,3 @@ variable "waf_logs_bucket_name" {
   default     = "soc-waf-logs-126378327873"
 }
 
-variable "wazuh_reader_iam_arn" {
-  description = "Wazuh CloudTrail 읽기 권한 IAM ARN"
-  type        = string
-}
