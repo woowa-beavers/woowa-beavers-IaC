@@ -87,22 +87,24 @@ jobs:
           echo "TF_VAR_private_subnet_id=${{ secrets.DEV_PRIVATE_SUBNET_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_alb_sg_id=${{ secrets.DEV_ALB_SG_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_bastion_ami_id=${{ secrets.DEV_BASTION_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_bastion_private_ip=${{ secrets.DEV_BASTION_PRIVATE_IP }}" >> $GITHUB_ENV
+          echo "TF_VAR_bastion_key_name=${{ secrets.DEV_BASTION_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_nat_ami_id=${{ secrets.DEV_NAT_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_nat_private_ip=${{ secrets.DEV_NAT_PRIVATE_IP }}" >> $GITHUB_ENV
+          echo "TF_VAR_nat_key_name=${{ secrets.DEV_NAT_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_1_ami_id=${{ secrets.DEV_EC2_1_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ec2_1_private_ip=${{ secrets.DEV_EC2_1_PRIVATE_IP }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_1_key_name=${{ secrets.DEV_EC2_1_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_2_ami_id=${{ secrets.DEV_EC2_2_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ec2_2_private_ip=${{ secrets.DEV_EC2_2_PRIVATE_IP }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_2_key_name=${{ secrets.DEV_EC2_2_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_3_ami_id=${{ secrets.DEV_EC2_3_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ec2_3_private_ip=${{ secrets.DEV_EC2_3_PRIVATE_IP }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_3_key_name=${{ secrets.DEV_EC2_3_KEY_NAME }}" >> $GITHUB_ENV
           echo "TF_VAR_ec2_4_ami_id=${{ secrets.DEV_EC2_4_AMI_ID }}" >> $GITHUB_ENV
-          echo "TF_VAR_ec2_4_private_ip=${{ secrets.DEV_EC2_4_PRIVATE_IP }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_4_key_name=${{ secrets.DEV_EC2_4_KEY_NAME }}" >> $GITHUB_ENV
+          echo "TF_VAR_ec2_5_ami_id=${{ secrets.DEV_EC2_5_AMI_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_db_subnet_ids=${{ secrets.DEV_DB_SUBNET_IDS }}" >> $GITHUB_ENV
           echo "TF_VAR_rds_sg_id=${{ secrets.DEV_RDS_SG_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_certificate_arn=${{ secrets.DEV_CERTIFICATE_ARN }}" >> $GITHUB_ENV
           echo "TF_VAR_auth_db_password=${{ secrets.DEV_AUTH_DB_PASSWORD }}" >> $GITHUB_ENV
           echo "TF_VAR_commerce_db_password=${{ secrets.DEV_COMMERCE_DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "TF_VAR_x_origin_secret=${{ secrets.DEV_X_ORIGIN_SECRET }}" >> $GITHUB_ENV
 
       # ==========================================
       # sec 계정 (126378327873)
@@ -136,7 +138,6 @@ jobs:
           echo "TF_VAR_cloudflare_zone_id=${{ secrets.CLOUDFLARE_ZONE_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_tunnel_id_bastion=${{ secrets.TUNNEL_ID_BASTION }}" >> $GITHUB_ENV
           echo "TF_VAR_tunnel_id_thehive=${{ secrets.TUNNEL_ID_THEHIVE }}" >> $GITHUB_ENV
-          echo "TF_VAR_tunnel_id_fix_inventory=${{ secrets.TUNNEL_ID_FIX_INVENTORY }}" >> $GITHUB_ENV
           echo "TF_VAR_tunnel_id_misp=${{ secrets.TUNNEL_ID_MISP }}" >> $GITHUB_ENV
           echo "TF_VAR_tunnel_id_n8n=${{ secrets.TUNNEL_ID_N8N }}" >> $GITHUB_ENV
           echo "TF_VAR_tunnel_id_velociraptor=${{ secrets.TUNNEL_ID_VELOCIRAPTOR }}" >> $GITHUB_ENV

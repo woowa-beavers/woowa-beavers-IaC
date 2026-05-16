@@ -44,15 +44,6 @@ resource "cloudflare_record" "cortex" {
   ttl     = 1
 }
 
-resource "cloudflare_record" "fix_inventory" {
-  zone_id = var.cloudflare_zone_id
-  name    = "fix-inventory"
-  content = "${var.tunnel_id_fix_inventory}.cfargotunnel.com"
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1
-}
-
 resource "cloudflare_record" "misp" {
   zone_id = var.cloudflare_zone_id
   name    = "misp"

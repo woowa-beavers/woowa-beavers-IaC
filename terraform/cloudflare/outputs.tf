@@ -12,11 +12,6 @@ output "cortex_hostname" {
   value       = cloudflare_record.cortex.hostname
 }
 
-output "fix_inventory_hostname" {
-  description = "Fix-Inventory 터널 DNS 호스트명"
-  value       = cloudflare_record.fix_inventory.hostname
-}
-
 output "misp_hostname" {
   description = "MISP 터널 DNS 호스트명"
   value       = cloudflare_record.misp.hostname

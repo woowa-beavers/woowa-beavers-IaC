@@ -7,7 +7,6 @@ cloudflare_zone_id   = "your-cloudflare-zone-id"
 
 tunnel_id_bastion       = "your-bastion-tunnel-id"
 tunnel_id_thehive       = "your-thehive-tunnel-id"
-tunnel_id_fix_inventory = "your-fix-inventory-tunnel-id"
 tunnel_id_misp          = "your-misp-tunnel-id"
 tunnel_id_n8n           = "your-n8n-tunnel-id"
 tunnel_id_velociraptor  = "your-velociraptor-tunnel-id"
