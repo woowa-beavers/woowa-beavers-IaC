@@ -1,6 +1,27 @@
 # TheHive Core Settings
 play.http.secret.key="{{ play_secret_key | default('changeme12345') }}"
 
+# Database (Cassandra)
+storage {
+  provider = cql
+  cql {
+    cluster = thp
+    hostname = ["cassandra"]
+    createKeyspace = true
+    keyspace = thehive
+    replicationFactor = 1
+  }
+}
+
+# Index (Elasticsearch)
+index.search {
+  provider = elasticsearch
+  elasticsearch {
+    hostname = ["elasticsearch"]
+    indexSuffix = thehive
+  }
+}
+
 # MISP 연동 설정
 misp {
   interval: 1 hour

@@ -11,5 +11,13 @@ ssh_key_path: "~/.ssh/woowa-beavers-keypair.pem"
 home_user:    "ann"
 
 # --- [API Tokens] ---
-cf_token:     "YOUR_CF_TOKEN"
-misp_api_key: "YOUR_MISP_KEY"
+cf_token:            "YOUR_CF_TOKEN"
+misp_api_key:        "YOUR_MISP_KEY"
+
+# --- [MISP] ---
+misp_external_domain: "misp.example.com"
+misp_admin_email:     "admin@admin.test"
+misp_admin_pw:        "YOUR_MISP_ADMIN_PW"
+
+# --- [TheHive] ---
+play_secret_key: "YOUR_PLAY_SECRET_KEY"
