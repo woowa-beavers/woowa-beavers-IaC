@@ -117,10 +117,9 @@ resource "aws_security_group" "misp" {
 # TheHive NAT Instance
 # ==========================================
 resource "aws_instance" "thehive_nat" {
-  ami               = var.ec2_ami
-  instance_type     = "t3.nano"
-  subnet_id         = var.thehive_public_subnet_id
-  availability_zone = "ap-northeast-2d"
+  ami           = var.ec2_ami
+  instance_type = "t3.nano"
+  subnet_id     = var.thehive_public_subnet_id
 
   vpc_security_group_ids = [aws_security_group.thehive_nat.id]
   iam_instance_profile   = var.thehive_instance_profile_name
@@ -178,11 +177,10 @@ resource "aws_route_table_association" "thehive_private" {
 # TheHive Server
 # ==========================================
 resource "aws_instance" "thehive" {
-  ami               = var.ec2_ami
-  instance_type     = "t3.large"
-  subnet_id         = var.thehive_private_subnet_id
-  availability_zone = "ap-northeast-2d"
-  key_name          = aws_key_pair.thehive.key_name
+  ami           = var.ec2_ami
+  instance_type = "t3.large"
+  subnet_id     = var.thehive_private_subnet_id
+  key_name      = aws_key_pair.thehive.key_name
 
   vpc_security_group_ids = [aws_security_group.thehive.id]
   iam_instance_profile   = var.thehive_instance_profile_name
@@ -200,11 +198,10 @@ resource "aws_instance" "thehive" {
 # MISP Server
 # ==========================================
 resource "aws_instance" "misp" {
-  ami               = var.misp_ami
-  instance_type     = "t3a.medium"
-  subnet_id         = var.misp_private_subnet_id
-  availability_zone = "ap-northeast-2a"
-  key_name          = aws_key_pair.misp.key_name
+  ami           = var.misp_ami
+  instance_type = "t3a.medium"
+  subnet_id     = var.misp_private_subnet_id
+  key_name      = aws_key_pair.misp.key_name
 
   vpc_security_group_ids = [aws_security_group.misp.id]
   iam_instance_profile   = var.misp_instance_profile_name

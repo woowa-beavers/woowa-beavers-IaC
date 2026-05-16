@@ -2,6 +2,10 @@
 # 역할: VPC · 서브넷 · IGW · 라우트 테이블 · ALB SG · RDS SG · Bastion · NAT 인스턴스 생성
 # 흐름: variables.tf 입력값 → 전체 네트워크 레이어 생성 → outputs.tf 출력
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 # ==========================================
 # VPC
 # ==========================================
@@ -21,50 +25,50 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public_1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.public_subnet_1_cidr
-  availability_zone = "ap-northeast-2a"
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name = "woowa-beavers-subnet-public1-ap-northeast-2a"
+    Name = "woowa-beavers-subnet-public1-${data.aws_availability_zones.available.names[0]}"
   }
 }
 
 resource "aws_subnet" "public_2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.public_subnet_2_cidr
-  availability_zone = "ap-northeast-2c"
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
-    Name = "woowa-beavers-subnet-public2-ap-northeast-2c"
+    Name = "woowa-beavers-subnet-public2-${data.aws_availability_zones.available.names[1]}"
   }
 }
 
 resource "aws_subnet" "private_1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_cidr
-  availability_zone = "ap-northeast-2a"
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name = "woowa-beavers-subnet-private1-ap-northeast-2a"
+    Name = "woowa-beavers-subnet-private1-${data.aws_availability_zones.available.names[0]}"
   }
 }
 
 resource "aws_subnet" "db_1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.db_subnet_1_cidr
-  availability_zone = "ap-northeast-2a"
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name = "woowa-beavers-subnet-private2-ap-northeast-2a"
+    Name = "woowa-beavers-subnet-private2-${data.aws_availability_zones.available.names[0]}"
   }
 }
 
 resource "aws_subnet" "db_2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.db_subnet_2_cidr
-  availability_zone = "ap-northeast-2c"
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
-    Name = "woowa-beavers-subnet-db2-ap-northeast-2c"
+    Name = "woowa-beavers-subnet-db2-${data.aws_availability_zones.available.names[1]}"
   }
 }
 

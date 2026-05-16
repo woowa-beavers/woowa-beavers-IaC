@@ -2,6 +2,10 @@
 # 역할: sec 계정 네트워킹 - MISP VPC/서브넷/IGW/NAT GW, TheHive VPC/서브넷/IGW 전체 생성
 # 흐름: variables.tf 입력값 → VPC·서브넷·IGW·라우트 테이블 생성 → NAT GW → outputs.tf 출력
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 # ==========================================
 # MISP VPC
 # ==========================================
@@ -30,10 +34,10 @@ resource "aws_internet_gateway" "misp" {
 resource "aws_subnet" "misp_public" {
   vpc_id            = aws_vpc.misp.id
   cidr_block        = var.misp_public_subnet_cidr
-  availability_zone = "ap-northeast-2a"
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name      = "misp-public-subnet-a"
+    Name      = "misp-public-subnet-${data.aws_availability_zones.available.names[0]}"
     Project   = var.misp_project_name
     ManagedBy = "terraform"
   }
@@ -42,10 +46,10 @@ resource "aws_subnet" "misp_public" {
 resource "aws_subnet" "misp_private" {
   vpc_id            = aws_vpc.misp.id
   cidr_block        = var.misp_private_subnet_cidr
-  availability_zone = "ap-northeast-2a"
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name      = "misp-private-subnet-a"
+    Name      = "misp-private-subnet-${data.aws_availability_zones.available.names[0]}"
     Project   = var.misp_project_name
     ManagedBy = "terraform"
   }
@@ -142,7 +146,7 @@ resource "aws_internet_gateway" "thehive" {
 resource "aws_subnet" "thehive_public" {
   vpc_id            = aws_vpc.thehive.id
   cidr_block        = var.thehive_public_subnet_cidr
-  availability_zone = "ap-northeast-2d"
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
     Name      = "thehive-public-subnet"
@@ -153,7 +157,7 @@ resource "aws_subnet" "thehive_public" {
 resource "aws_subnet" "thehive_private" {
   vpc_id            = aws_vpc.thehive.id
   cidr_block        = var.thehive_private_subnet_cidr
-  availability_zone = "ap-northeast-2d"
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
     Name      = "thehive-private-subnet"
