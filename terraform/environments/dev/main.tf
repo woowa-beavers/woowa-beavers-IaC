@@ -86,6 +86,10 @@ module "cdn" {
   certificate_arn   = var.certificate_arn
 
   ec2_1_instance_id = module.compute.ec2_1_instance_id
+  ec2_2_instance_id = module.compute.ec2_2_instance_id
+  ec2_3_instance_id = module.compute.ec2_3_instance_id
+  ec2_4_instance_id = module.compute.ec2_4_instance_id
+  ec2_5_instance_id = module.compute.ec2_5_instance_id
   x_origin_secret   = var.x_origin_secret
 }
 
